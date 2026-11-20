@@ -9,65 +9,32 @@ final class GestaltViewModel: ObservableObject {
     @Published var notice: GestaltNotice?
     @Published private(set) var hasAttemptedLoad = false
     @Published private(set) var backups: [GestaltBackup] = []
+
     @Published var selectedTweaks: Set<GestaltTweakID> = []
+    @Published var disabledTweaks: Set<GestaltTweakID> = []
+
     @Published var dynamicIslandSubtype: Int?
     @Published var changesModelName = false
     @Published var modelName = ""
     @Published var stagesAIRegion = false
     @Published var regionPresetID: String?
+
     @Published private(set) var isRespringing = false
 
-    enum Device: Hashable { case iPhone, appleWatch }
+    enum Device: Hashable {
+        case iPhone
+        case appleWatch
+    }
+
     @Published private(set) var selectedDevice: Device = .iPhone
     @Published var isDeviceSelectorExpanded = true
+
     let watch = WatchConnection()
+
     private var watchDeviceID: String?
     private var watchSnapshot: Data?
     private var watchGeneration = 0
     private var watchSubscription: AnyCancellable?
-
-    init() {
-        watchSubscription = watch.$pairingGeneration.dropFirst().sink { [weak self] _ in
-            guard let self, self.selectedDevice == .appleWatch else { return }
-            self.watchGeneration += 1
-            self.clearStagedChanges()
-            self.isDirty = false
-            self.plist = nil
-            self.watchSnapshot = nil
-            self.watchDeviceID = nil
-            self.backups = []
-        }
-    }
-
-    func selectDevice(_ device: Device) {
-        guard !isBusy, device != selectedDevice else { return }
-        selectedDevice = device
-        plist = nil
-        isDirty = false
-        clearStagedChanges()
-        watchSnapshot = nil
-        watchDeviceID = nil
-        backups = []
-        load()
-    }
-
-    var deviceContextID: String {
-        selectedDevice == .iPhone ? "iPhone" : "AppleWatch-\(watchGeneration)-\(watchDeviceID ?? "unavailable")"
-    }
-
-    private func clearStagedChanges() {
-        selectedTweaks.removeAll()
-        dynamicIslandSubtype = nil
-        changesModelName = false
-        modelName = ""
-        stagesAIRegion = false
-        regionPresetID = nil
-        selectedWatchTweaks.removeAll()
-        watchRegionCode = ""
-        watchSalesRegion = ""
-        watchResolution = -1
-        watchUltraFaceClass = 29
-    }
 
     @Published var selectedWatchTweaks: Set<String> = []
     @Published var watchRegionCode = ""
@@ -75,38 +42,77 @@ final class GestaltViewModel: ObservableObject {
     @Published var watchResolution = -1
     @Published var watchUltraFaceClass = 29
 
-    var watchUltraFaceClassOptions: [Int] {
-        guard selectedDevice == .appleWatch, let plist else { return [] }
-        return WatchTweakCatalog.ultraFaceClasses(plist: plist, build: watch.build)
-    }
-
-    var currentWatchUltraFaceClass: Int? {
-        guard selectedDevice == .appleWatch, let plist else { return nil }
-        return WatchTweakCatalog.currentUltraFaceClass(plist: plist, build: watch.build)
-    }
-
-    private func syncWatchUltraFaceClass() {
-        watchUltraFaceClass = currentWatchUltraFaceClass ?? watchUltraFaceClassOptions.first ?? 29
-    }
-
-    var supportsWatchFaces: Bool {
-        guard selectedDevice == .appleWatch, let plist else { return false }
-        return WatchTweakCatalog.faceLayout(plist: plist, build: watch.build) != nil
-    }
-
     private let access = GestaltAccess.shared()
 
-    var aiRegionProfile: AIRegionProfile? {
-        plist.flatMap(AIRegionProfile.init(plist:))
+    init() {
+        watchSubscription = watch.$pairingGeneration
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self,
+                      self.selectedDevice == .appleWatch else {
+                    return
+                }
+
+                self.watchGeneration += 1
+                self.clearStagedChanges()
+                self.isDirty = false
+                self.plist = nil
+                self.watchSnapshot = nil
+                self.watchDeviceID = nil
+                self.backups = []
+            }
     }
 
-    var requiresForcedAIEnable: Bool {
-        plist.map { AIRegionConfiguration.resolve(for: $0).requiresDeviceSpoofing } ?? false
+    // MARK: - Device
+
+    func selectDevice(_ device: Device) {
+        guard !isBusy, device != selectedDevice else { return }
+
+        selectedDevice = device
+        plist = nil
+        isDirty = false
+
+        clearStagedChanges()
+
+        watchSnapshot = nil
+        watchDeviceID = nil
+        backups = []
+
+        load()
+    }
+
+    var deviceContextID: String {
+        selectedDevice == .iPhone
+            ? "iPhone"
+            : "AppleWatch-\(watchGeneration)-\(watchDeviceID ?? "unavailable")"
+    }
+
+    // MARK: - Staged Changes
+
+    private func clearStagedChanges() {
+        selectedTweaks.removeAll()
+        disabledTweaks.removeAll()
+
+        dynamicIslandSubtype = nil
+        changesModelName = false
+        modelName = ""
+        stagesAIRegion = false
+        regionPresetID = nil
+
+        selectedWatchTweaks.removeAll()
+        watchRegionCode = ""
+        watchSalesRegion = ""
+        watchResolution = -1
+        watchUltraFaceClass = 29
     }
 
     var hasStagedTweaks: Bool {
-        if selectedDevice == .appleWatch { return stagedChangeCount > 0 }
+        if selectedDevice == .appleWatch {
+            return stagedChangeCount > 0
+        }
+
         return !selectedTweaks.isEmpty
+            || !disabledTweaks.isEmpty
             || dynamicIslandSubtype != nil
             || (changesModelName && !modelName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             || stagesAIRegion
@@ -115,41 +121,85 @@ final class GestaltViewModel: ObservableObject {
 
     var stagedChangeCount: Int {
         if selectedDevice == .appleWatch {
-            return selectedWatchTweaks.count + (watchRegionCode.isEmpty ? 0 : 1)
-                + (watchSalesRegion.isEmpty ? 0 : 1) + (watchResolution >= 0 ? 1 : 0)
+            return selectedWatchTweaks.count
+                + (watchRegionCode.isEmpty ? 0 : 1)
+                + (watchSalesRegion.isEmpty ? 0 : 1)
+                + (watchResolution >= 0 ? 1 : 0)
         }
+
         return selectedTweaks.count
+            + disabledTweaks.count
             + (dynamicIslandSubtype == nil || selectedTweaks.contains(.supportsDynamicIsland) ? 0 : 1)
             + (changesModelName ? 1 : 0)
             + (stagesAIRegion ? 1 : 0)
             + (regionPresetID == nil ? 0 : 1)
     }
 
-    func load() {
-        guard !isBusy else { return }
-        hasAttemptedLoad = true
-        if selectedDevice == .appleWatch { loadWatch(); return }
-        isBusy = true
-        notice = nil
+    // MARK: - Watch
 
-        defer { isBusy = false }
-        do {
-            try access.connect()
-            guard let dictionary = try access.readGestalt() as? [String: Any] else {
-                throw GestaltEditError.invalidPlist
-            }
-            plist = GestaltPlist(dict: dictionary)
-            isDirty = false
-            refreshBackups()
-        } catch {
-            plist = nil
-            report(error)
+    var watchUltraFaceClassOptions: [Int] {
+        guard selectedDevice == .appleWatch,
+              let plist else {
+            return []
         }
+
+        return WatchTweakCatalog.ultraFaceClasses(
+            plist: plist,
+            build: watch.build
+        )
+    }
+
+    var currentWatchUltraFaceClass: Int? {
+        guard selectedDevice == .appleWatch,
+              let plist else {
+            return nil
+        }
+
+        return WatchTweakCatalog.currentUltraFaceClass(
+            plist: plist,
+            build: watch.build
+        )
+    }
+
+    private func syncWatchUltraFaceClass() {
+        watchUltraFaceClass =
+            currentWatchUltraFaceClass
+            ?? watchUltraFaceClassOptions.first
+            ?? 29
+    }
+
+    var supportsWatchFaces: Bool {
+        guard selectedDevice == .appleWatch,
+              let plist else {
+            return false
+        }
+
+        return WatchTweakCatalog.faceLayout(
+            plist: plist,
+            build: watch.build
+        ) != nil
+    }
+
+    // MARK: - AI Region
+
+    var aiRegionProfile: AIRegionProfile? {
+        plist.flatMap(AIRegionProfile.init(plist:))
+    }
+
+    var requiresForcedAIEnable: Bool {
+        plist.map {
+            AIRegionConfiguration.resolve(for: $0).requiresDeviceSpoofing
+        } ?? false
     }
 
     var stagedAIRegionPresetID: String? {
-        guard stagesAIRegion, let plist else { return regionPresetID }
-        return AIRegionConfiguration.resolve(for: plist).changesRegion ? "LL" : regionPresetID
+        guard stagesAIRegion, let plist else {
+            return regionPresetID
+        }
+
+        return AIRegionConfiguration.resolve(for: plist).changesRegion
+            ? "LL"
+            : regionPresetID
     }
 
     func setRegionPreset(_ id: String?) {
@@ -157,37 +207,18 @@ final class GestaltViewModel: ObservableObject {
         regionPresetID = id
     }
 
-    func setTweak(_ id: GestaltTweakID, enabled: Bool) {
-        selectedTweaks = GestaltTweakCatalog.selecting(id, enabled: enabled, in: selectedTweaks)
-    }
-    func isTweakApplied(_ id: GestaltTweakID) -> Bool {
-    guard let plist,
-          let definition = GestaltTweakCatalog.definition(for: id),
-          !definition.values.isEmpty else {
-        return false
-    }
-
-    let currentValues = plist.cacheExtra
-
-    return definition.values.allSatisfy { key, expectedValue in
-        guard let actualValue = currentValues[key] else {
-            return false
-        }
-
-        return NSDictionary(
-            object: actualValue,
-            forKey: "value" as NSString
-        ).isEqual(to: ["value": expectedValue])
-    }
-}
-
     func setAIRegion(enabled: Bool) {
         stagesAIRegion = enabled
+
         if enabled {
             regionPresetID = nil
         }
+
         if enabled, requiresForcedAIEnable {
-            let twoStage = plist.map { AIRegionConfiguration.resolve(for: $0).usesTwoStageSetup } ?? false
+            let twoStage = plist.map {
+                AIRegionConfiguration.resolve(for: $0).usesTwoStageSetup
+            } ?? false
+
             notice = GestaltNotice(
                 kind: .riskWarning,
                 message: twoStage
@@ -197,106 +228,322 @@ final class GestaltViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Tweaks
+
+    func setTweak(_ id: GestaltTweakID, enabled: Bool) {
+        if enabled {
+            disabledTweaks.remove(id)
+
+            selectedTweaks = GestaltTweakCatalog.selecting(
+                id,
+                enabled: true,
+                in: selectedTweaks
+            )
+        } else {
+            selectedTweaks.remove(id)
+
+            if isTweakApplied(id) {
+                disabledTweaks.insert(id)
+            } else {
+                disabledTweaks.remove(id)
+            }
+        }
+    }
+
+    func isTweakEnabled(_ id: GestaltTweakID) -> Bool {
+        if disabledTweaks.contains(id) {
+            return false
+        }
+
+        return selectedTweaks.contains(id) || isTweakApplied(id)
+    }
+
+    func isTweakApplied(_ id: GestaltTweakID) -> Bool {
+        guard let plist,
+              let definition = GestaltTweakCatalog.definition(for: id),
+              !definition.values.isEmpty else {
+            return false
+        }
+
+        return definition.values.allSatisfy { key, expectedValue in
+            guard let actualValue = plist.cacheExtra[key] else {
+                return false
+            }
+
+            return NSDictionary(
+                object: actualValue,
+                forKey: "value" as NSString
+            ).isEqual(to: ["value": expectedValue])
+        }
+    }
+
+    // MARK: - Loading
+
+    func load() {
+        guard !isBusy else { return }
+
+        hasAttemptedLoad = true
+
+        if selectedDevice == .appleWatch {
+            loadWatch()
+            return
+        }
+
+        isBusy = true
+        notice = nil
+
+        defer {
+            isBusy = false
+        }
+
+        do {
+            try access.connect()
+
+            guard let dictionary = try access.readGestalt() as? [String: Any] else {
+                throw GestaltEditError.invalidPlist
+            }
+
+            plist = GestaltPlist(dict: dictionary)
+            isDirty = false
+
+            refreshBackups()
+        } catch {
+            plist = nil
+            report(error)
+        }
+    }
+
+    // MARK: - Backup Actions
+
     private var selectedBackupActions: [String] {
         var actions: [String]
+
         if selectedDevice == .appleWatch {
-            actions = WatchTweakCatalog.definitions.filter { selectedWatchTweaks.contains($0.id) }.map(\.title)
-            if !watchRegionCode.isEmpty { actions.append(String(localized: "Region") + ": " + watchRegionCode) }
-            if !watchSalesRegion.isEmpty { actions.append(String(localized: "Sales Region") + ": " + watchSalesRegion) }
-            if WatchTweakCatalog.resolutions.indices.contains(watchResolution) { actions.append(String(localized: "Resolution")) }
+            actions = WatchTweakCatalog.definitions
+                .filter {
+                    selectedWatchTweaks.contains($0.id)
+                }
+                .map(\.title)
+
+            if !watchRegionCode.isEmpty {
+                actions.append(
+                    String(localized: "Region") + ": " + watchRegionCode
+                )
+            }
+
+            if !watchSalesRegion.isEmpty {
+                actions.append(
+                    String(localized: "Sales Region") + ": " + watchSalesRegion
+                )
+            }
+
+            if WatchTweakCatalog.resolutions.indices.contains(watchResolution) {
+                actions.append(String(localized: "Resolution"))
+            }
         } else {
-            actions = GestaltTweakCatalog.definitions.filter { selectedTweaks.contains($0.id) }.map(\.title)
-            if dynamicIslandSubtype != nil { actions.append(String(localized: "Dynamic Island")) }
-            if changesModelName { actions.append(String(localized: "Model Name")) }
-            if let regionPresetID { actions.append(String(localized: "Region") + ": " + regionPresetID) }
-            if stagesAIRegion { actions.append(String(localized: "Enable Siri AI")) }
+            actions = GestaltTweakCatalog.definitions
+                .filter {
+                    selectedTweaks.contains($0.id)
+                }
+                .map(\.title)
+
+            for id in disabledTweaks {
+                if let definition = GestaltTweakCatalog.definition(for: id) {
+                    actions.append(
+                        String(localized: "Disable: ") + definition.title
+                    )
+                }
+            }
+
+            if dynamicIslandSubtype != nil {
+                actions.append(String(localized: "Dynamic Island"))
+            }
+
+            if changesModelName {
+                actions.append(String(localized: "Model Name"))
+            }
+
+            if let regionPresetID {
+                actions.append(
+                    String(localized: "Region") + ": " + regionPresetID
+                )
+            }
+
+            if stagesAIRegion {
+                actions.append(String(localized: "Enable Siri AI"))
+            }
         }
+
         return actions
     }
 
+    // MARK: - Apply
+
     func applySelectedTweaks() {
-        if selectedDevice == .appleWatch { applyWatchTweaks(); return }
-        guard !isBusy, var pending = plist else { return }
+        if selectedDevice == .appleWatch {
+            applyWatchTweaks()
+            return
+        }
+
+        guard !isBusy,
+              var pending = plist else {
+            return
+        }
+
         do {
+            // Disabled tweaks are tracked explicitly.
+            // Their original values must be available before safely reverting.
+
             for id in selectedTweaks {
-                guard let definition = GestaltTweakCatalog.definition(for: id) else { continue }
+                guard let definition = GestaltTweakCatalog.definition(for: id) else {
+                    continue
+                }
+
                 try pending.apply(definition: definition)
             }
+
             if let dynamicIslandSubtype {
                 try pending.setDynamicIslandSubtype(dynamicIslandSubtype)
             }
+
             if changesModelName {
-                let name = modelName.trimmingCharacters(in: .whitespacesAndNewlines)
-                guard !name.isEmpty else { throw GestaltEditError.emptyModelName }
+                let name = modelName.trimmingCharacters(
+                    in: .whitespacesAndNewlines
+                )
+
+                guard !name.isEmpty else {
+                    throw GestaltEditError.emptyModelName
+                }
+
                 try pending.setModelName(name)
             }
+
             if let regionPresetID,
-               let region = GestaltRegionPreset.all.first(where: { $0.id == regionPresetID }) {
+               let region = GestaltRegionPreset.all.first(
+                    where: { $0.id == regionPresetID }
+               ) {
                 pending.apply(region: region)
             }
+
             var expectedConfiguration: AIRegionConfiguration?
+
             if stagesAIRegion {
                 let configuration = AIRegionConfiguration.resolve(for: pending)
                 configuration.apply(to: &pending)
                 expectedConfiguration = configuration
             }
-            save(pending, expectedAIRegion: expectedConfiguration, actions: selectedBackupActions) { [weak self] in
-                self?.selectedTweaks.removeAll()
-                self?.dynamicIslandSubtype = nil
-                self?.changesModelName = false
-                self?.modelName = ""
-                self?.stagesAIRegion = false
-                self?.regionPresetID = nil
+
+            save(
+                pending,
+                expectedAIRegion: expectedConfiguration,
+                actions: selectedBackupActions
+            ) { [weak self] in
+                guard let self else { return }
+
+                self.selectedTweaks.removeAll()
+                self.disabledTweaks.removeAll()
+
+                self.dynamicIslandSubtype = nil
+                self.changesModelName = false
+                self.modelName = ""
+                self.stagesAIRegion = false
+                self.regionPresetID = nil
             }
+
         } catch {
             report(error)
         }
     }
 
     func applyChanges() {
-        guard !isBusy, let plist else { return }
+        guard !isBusy,
+              let plist else {
+            return
+        }
+
         save(plist, expectedAIRegion: nil)
     }
 
+    // MARK: - Create Backup
+
     func createBackup() {
         guard !isBusy else { return }
-        if selectedDevice == .appleWatch { backupWatch(); return }
+
+        if selectedDevice == .appleWatch {
+            backupWatch()
+            return
+        }
+
         isBusy = true
-        defer { isBusy = false }
+
+        defer {
+            isBusy = false
+        }
+
         do {
             try access.connect()
+
             let data = try access.readGestaltData()
-            let backup = try GestaltBackupStore.create(from: data, record: .init(source: .manual, actions: [], changes: []))
+
+            let backup = try GestaltBackupStore.create(
+                from: data,
+                record: .init(
+                    source: .manual,
+                    actions: [],
+                    changes: []
+                )
+            )
+
             refreshBackups()
+
             notice = GestaltNotice(
                 kind: .backupCreated,
                 message: String(
-                    format: String(localized: "Saved %@.plist. You can export it from the Backups tab."),
+                    format: String(
+                        localized: "Saved %@.plist. You can export it from the Backups tab."
+                    ),
                     backup.name
                 )
             )
+
         } catch {
             report(error)
         }
     }
 
+    // MARK: - Import Backup
+
     func importBackup(from url: URL) {
         guard !isBusy else { return }
+
         isBusy = true
-        defer { isBusy = false }
+
+        defer {
+            isBusy = false
+        }
 
         guard selectedDevice != .appleWatch || watchDeviceID != nil else {
-            report(WatchMGWire.failure(String(localized: "Reload Apple Watch before saving.")))
+            report(
+                WatchMGWire.failure(
+                    String(localized: "Reload Apple Watch before saving.")
+                )
+            )
             return
         }
+
         let accessed = url.startAccessingSecurityScopedResource()
+
         defer {
-            if accessed { url.stopAccessingSecurityScopedResource() }
+            if accessed {
+                url.stopAccessingSecurityScopedResource()
+            }
         }
 
         do {
             let data = try Data(contentsOf: url)
+
             var format = PropertyListSerialization.PropertyListFormat.binary
+
             guard let dictionary = try PropertyListSerialization.propertyList(
                 from: data,
                 options: [],
@@ -305,26 +552,45 @@ final class GestaltViewModel: ObservableObject {
                   dictionary["CacheExtra"] is [String: Any] else {
                 throw GestaltEditError.invalidBackup
             }
-            let backup = try GestaltBackupStore.create(from: data, deviceID: selectedDevice == .appleWatch ? watchDeviceID : nil, record: .init(source: .imported, actions: [], changes: []))
+
+            let backup = try GestaltBackupStore.create(
+                from: data,
+                deviceID: selectedDevice == .appleWatch ? watchDeviceID : nil,
+                record: .init(
+                    source: .imported,
+                    actions: [],
+                    changes: []
+                )
+            )
+
             refreshBackups()
+
             notice = GestaltNotice(
                 kind: .backupCreated,
                 message: String(
-                    format: String(localized: "Imported %@ and saved it as %@.plist."),
+                    format: String(
+                        localized: "Imported %@ and saved it as %@.plist."
+                    ),
                     url.lastPathComponent,
                     backup.name
                 )
             )
+
         } catch {
             report(error)
         }
     }
 
+    // MARK: - Restore Backup
+
     func restore(_ backup: GestaltBackup) {
         guard !isBusy else { return }
+
         do {
             let data = try GestaltBackupStore.data(for: backup)
+
             var format = PropertyListSerialization.PropertyListFormat.binary
+
             guard let dictionary = try PropertyListSerialization.propertyList(
                 from: data,
                 options: [],
@@ -332,30 +598,57 @@ final class GestaltViewModel: ObservableObject {
             ) as? [String: Any] else {
                 throw GestaltEditError.invalidBackup
             }
+
             let snapshot = GestaltPlist(dict: dictionary)
+
             if backup.purpose == .siriAIIdentityRestore {
                 guard selectedDevice == .iPhone,
                       snapshot.dict["CacheExtra"] is [String: Any],
                       let currentDictionary = try access.readGestalt() as? [String: Any] else {
                     throw GestaltEditError.invalidBackup
                 }
+
                 let current = GestaltPlist(dict: currentDictionary)
+
                 guard SiriAIIdentityRestore.sameDevice(current, snapshot) else {
                     throw GestaltEditError.wrongDeviceBackup
                 }
-                let restored = SiriAIIdentityRestore.restoring(current, from: snapshot)
-                save(restored, expectedAIRegion: nil,
-                     expectedIdentity: SiriAIIdentityRestore.values(in: snapshot),
-                     source: .restore, actions: [String(localized: "Remove Device Spoof")]) { [weak self] in
+
+                let restored = SiriAIIdentityRestore.restoring(
+                    current,
+                    from: snapshot
+                )
+
+                save(
+                    restored,
+                    expectedAIRegion: nil,
+                    expectedIdentity: SiriAIIdentityRestore.values(in: snapshot),
+                    source: .restore,
+                    actions: [String(localized: "Remove Device Spoof")]
+                ) { [weak self] in
                     self?.clearStagedChanges()
                 }
+
             } else {
-                save(snapshot, expectedAIRegion: nil, source: .restore, actions: [String(localized: "Restore Backup"), backup.name]) { [weak self] in self?.clearStagedChanges() }
+                save(
+                    snapshot,
+                    expectedAIRegion: nil,
+                    source: .restore,
+                    actions: [
+                        String(localized: "Restore Backup"),
+                        backup.name
+                    ]
+                ) { [weak self] in
+                    self?.clearStagedChanges()
+                }
             }
+
         } catch {
             report(error)
         }
     }
+
+    // MARK: - Delete Backup
 
     func delete(_ backup: GestaltBackup) {
         do {
@@ -366,36 +659,69 @@ final class GestaltViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Refresh Backups
+
     func refreshBackups() {
         do {
-            if selectedDevice == .appleWatch && watchDeviceID == nil { backups = []; return }
-            backups = try GestaltBackupStore.list(deviceID: selectedDevice == .appleWatch ? watchDeviceID : nil)
+            if selectedDevice == .appleWatch && watchDeviceID == nil {
+                backups = []
+                return
+            }
+
+            backups = try GestaltBackupStore.list(
+                deviceID: selectedDevice == .appleWatch ? watchDeviceID : nil
+            )
+
         } catch {
             report(error)
         }
     }
 
-    private func siriAIOriginalIdentity(current: GestaltPlist, configuration: AIRegionConfiguration) throws -> GestaltPlist {
-        // Reapplying setup must not replace the real identity baseline with an
-        // already-spoofed identity. Prefer the dedicated recovery snapshot.
-        guard current.cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String == configuration.spoofedProductType else {
+    // MARK: - Siri AI Identity
+
+    private func siriAIOriginalIdentity(
+        current: GestaltPlist,
+        configuration: AIRegionConfiguration
+    ) throws -> GestaltPlist {
+
+        guard current.cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String
+                == configuration.spoofedProductType else {
             return current
         }
+
         let saved = try GestaltBackupStore.list()
-        let candidates = saved.filter { $0.purpose == .siriAIIdentityRestore }
-            + saved.filter { $0.purpose != .siriAIIdentityRestore }.reversed()
+
+        let candidates =
+            saved.filter {
+                $0.purpose == .siriAIIdentityRestore
+            }
+            + saved.filter {
+                $0.purpose != .siriAIIdentityRestore
+            }.reversed()
+
         for backup in candidates {
             guard let data = try? GestaltBackupStore.data(for: backup),
-                  let dictionary = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
-                  dictionary["CacheExtra"] is [String: Any] else { continue }
+                  let dictionary = try? PropertyListSerialization.propertyList(
+                    from: data,
+                    format: nil
+                  ) as? [String: Any],
+                  dictionary["CacheExtra"] is [String: Any] else {
+                continue
+            }
+
             let candidate = GestaltPlist(dict: dictionary)
+
             if SiriAIIdentityRestore.sameDevice(current, candidate),
-               candidate.cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String != configuration.spoofedProductType {
+               candidate.cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String
+                    != configuration.spoofedProductType {
                 return candidate
             }
         }
+
         throw GestaltEditError.missingOriginalIdentityBackup
     }
+
+    // MARK: - Save
 
     private func save(
         _ pendingPlist: GestaltPlist,
@@ -405,70 +731,140 @@ final class GestaltViewModel: ObservableObject {
         actions: [String] = [],
         completion: (() -> Void)? = nil
     ) {
+
         if selectedDevice == .appleWatch {
-            saveWatch(pendingPlist, source: source, actions: actions, completion: completion)
+            saveWatch(
+                pendingPlist,
+                source: source,
+                actions: actions,
+                completion: completion
+            )
             return
         }
+
         isBusy = true
         notice = nil
 
         do {
             let originalData = try access.readGestaltData()
-            let record = try GestaltBackupRecord.modification(from: originalData, to: pendingPlist.dict, source: source, actions: actions)
-            let automaticBackup = try GestaltBackupStore.create(from: originalData, record: record)
-            if let configuration = expectedAIRegion, configuration.usesTwoStageSetup {
-                guard let originalDictionary = try PropertyListSerialization.propertyList(from: originalData, format: nil) as? [String: Any],
+
+            let record = try GestaltBackupRecord.modification(
+                from: originalData,
+                to: pendingPlist.dict,
+                source: source,
+                actions: actions
+            )
+
+            let automaticBackup = try GestaltBackupStore.create(
+                from: originalData,
+                record: record
+            )
+
+            if let configuration = expectedAIRegion,
+               configuration.usesTwoStageSetup {
+
+                guard let originalDictionary =
+                        try PropertyListSerialization.propertyList(
+                            from: originalData,
+                            format: nil
+                        ) as? [String: Any],
                       originalDictionary["CacheExtra"] is [String: Any] else {
                     throw GestaltEditError.invalidPlist
                 }
+
                 let original = GestaltPlist(dict: originalDictionary)
-                let baseline = try siriAIOriginalIdentity(current: original, configuration: configuration)
-                let recovery = SiriAIIdentityRestore.restoring(pendingPlist, from: baseline)
-                let recoveryData = try PropertyListSerialization.data(fromPropertyList: recovery.dict, format: .binary, options: 0)
-                _ = try GestaltBackupStore.create(from: recoveryData, purpose: .siriAIIdentityRestore,
-                    record: try .modification(from: PropertyListSerialization.data(fromPropertyList: pendingPlist.dict, format: .binary, options: 0),
-                                              to: recovery.dict, source: .identityRecovery, actions: []))
+
+                let baseline = try siriAIOriginalIdentity(
+                    current: original,
+                    configuration: configuration
+                )
+
+                let recovery = SiriAIIdentityRestore.restoring(
+                    pendingPlist,
+                    from: baseline
+                )
+
+                let recoveryData = try PropertyListSerialization.data(
+                    fromPropertyList: recovery.dict,
+                    format: .binary,
+                    options: 0
+                )
+
+                _ = try GestaltBackupStore.create(
+                    from: recoveryData,
+                    purpose: .siriAIIdentityRestore,
+                    record: try .modification(
+                        from: PropertyListSerialization.data(
+                            fromPropertyList: pendingPlist.dict,
+                            format: .binary,
+                            options: 0
+                        ),
+                        to: recovery.dict,
+                        source: .identityRecovery,
+                        actions: []
+                    )
+                )
             }
+
             try access.saveGestalt(pendingPlist.dict)
+
             guard let verification = try access.readGestalt() as? [String: Any] else {
                 throw GestaltEditError.invalidPlist
             }
+
             let verifiedPlist = GestaltPlist(dict: verification)
+
             if let expectedIdentity,
-               !expectedIdentity.isEqual(SiriAIIdentityRestore.values(in: verifiedPlist)) {
+               !expectedIdentity.isEqual(
+                    SiriAIIdentityRestore.values(in: verifiedPlist)
+               ) {
                 throw GestaltEditError.verificationFailed
             }
 
             if let expectedAIRegion {
                 let cacheExtra = verifiedPlist.cacheExtra
+
                 guard AIRegionConfiguration.regionValues(in: verifiedPlist)
-                    .isEqual(AIRegionConfiguration.regionValues(in: pendingPlist)) else {
+                    .isEqual(
+                        AIRegionConfiguration.regionValues(in: pendingPlist)
+                    ) else {
                     throw GestaltEditError.verificationFailed
                 }
+
                 if expectedAIRegion.enablesSiriMode,
                    cacheExtra["a3n5T9sFtlyQ74NEp9ESxg"] as? Int != 2 {
                     throw GestaltEditError.verificationFailed
                 }
+
                 if expectedAIRegion.requiresDeviceSpoofing {
                     guard cacheExtra["A62OafQ85EJAiiqKn4agtg"] as? Int == 1,
                           cacheExtra["a3n5T9sFtlyQ74NEp9ESxg"] as? Int == 2,
-                          cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String == expectedAIRegion.spoofedProductType,
-                          cacheExtra["oYicEKzVTz4/CxxE05pEgQ"] as? String == expectedAIRegion.spoofedHardwareModel,
-                          cacheExtra["5pYKlGnYYBzGvAlIU8RjEQ"] as? String == expectedAIRegion.spoofedCPUModel else {
+                          cacheExtra["h9jDsbgj7xIVeIQ8S3/X3Q"] as? String
+                            == expectedAIRegion.spoofedProductType,
+                          cacheExtra["oYicEKzVTz4/CxxE05pEgQ"] as? String
+                            == expectedAIRegion.spoofedHardwareModel,
+                          cacheExtra["5pYKlGnYYBzGvAlIU8RjEQ"] as? String
+                            == expectedAIRegion.spoofedCPUModel else {
                         throw GestaltEditError.verificationFailed
                     }
                 }
             }
 
-            if NSDictionary(dictionary: verification).isEqual(to: pendingPlist.dict) {
+            if NSDictionary(dictionary: verification)
+                .isEqual(to: pendingPlist.dict) {
                 try? GestaltBackupStore.markVerified(automaticBackup)
             }
+
             plist = verifiedPlist
             isDirty = false
+
             completion?()
+
             refreshBackups()
+
             isBusy = false
             isRespringing = true
+
         } catch {
             isDirty = true
             refreshBackups()
@@ -477,74 +873,160 @@ final class GestaltViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Apple Watch Apply
+
     private func applyWatchTweaks() {
-        guard !isBusy, let plist else { return }
+        guard !isBusy,
+              let plist else {
+            return
+        }
+
         do {
             var pending = plist
+
             if !watchRegionCode.isEmpty {
-                guard WatchTweakCatalog.regions.contains(where: { $0.1 == watchRegionCode }) else { return }
-                pending.setCacheExtra(watchRegionCode, forKey: "h63QSdBCiT/z0WU6rdQv6Q")
+                guard WatchTweakCatalog.regions.contains(
+                    where: { $0.1 == watchRegionCode }
+                ) else {
+                    return
+                }
+
+                pending.setCacheExtra(
+                    watchRegionCode,
+                    forKey: "h63QSdBCiT/z0WU6rdQv6Q"
+                )
             }
+
             if !watchSalesRegion.isEmpty {
-                guard WatchTweakCatalog.regions.contains(where: { $0.2 == watchSalesRegion }) else { return }
-                let current = "zHeENZu+wbg7PUprwNwBWg", legacy = "yK+xavymRGZ3xWc1tb8XDg"
-                let hasCurrent = pending.cacheExtra[current] != nil, hasLegacy = pending.cacheExtra[legacy] != nil
-                if hasCurrent || !hasLegacy { pending.setCacheExtra(watchSalesRegion, forKey: current) }
-                if hasLegacy { pending.setCacheExtra(watchSalesRegion, forKey: legacy) }
+                guard WatchTweakCatalog.regions.contains(
+                    where: { $0.2 == watchSalesRegion }
+                ) else {
+                    return
+                }
+
+                let current = "zHeENZu+wbg7PUprwNwBWg"
+                let legacy = "yK+xavymRGZ3xWc1tb8XDg"
+
+                let hasCurrent = pending.cacheExtra[current] != nil
+                let hasLegacy = pending.cacheExtra[legacy] != nil
+
+                if hasCurrent || !hasLegacy {
+                    pending.setCacheExtra(watchSalesRegion, forKey: current)
+                }
+
+                if hasLegacy {
+                    pending.setCacheExtra(watchSalesRegion, forKey: legacy)
+                }
             }
-            // Apply the combined AI preset after manual region selections so
-            // enabling it cannot leave a newly selected unsupported MG region.
-            pending = try WatchTweakCatalog.apply(selectedWatchTweaks, to: pending, build: watch.build,
-                                                  regionIdentifier: watch.regionIdentifier,
-                                                  ultraFaceClass: watchUltraFaceClass,
-                                                  original: selectedWatchTweaks.contains("ultra") ? try originalWatchCache() : nil,
-                                                  hardwareIdentifier: watch.hardwareIdentifier)
+
+            pending = try WatchTweakCatalog.apply(
+                selectedWatchTweaks,
+                to: pending,
+                build: watch.build,
+                regionIdentifier: watch.regionIdentifier,
+                ultraFaceClass: watchUltraFaceClass,
+                original: selectedWatchTweaks.contains("ultra")
+                    ? try originalWatchCache()
+                    : nil,
+                hardwareIdentifier: watch.hardwareIdentifier
+            )
+
             if WatchTweakCatalog.resolutions.indices.contains(watchResolution) {
                 let resolution = WatchTweakCatalog.resolutions[watchResolution]
-                pending.setCacheExtra(resolution.1, forKey: "g7YQ1Djxh4YiKlEeaoGhzg")
-                pending.setCacheExtra(resolution.2, forKey: "OjzOua0LkOegX7pQdgMksw")
+
+                pending.setCacheExtra(
+                    resolution.1,
+                    forKey: "g7YQ1Djxh4YiKlEeaoGhzg"
+                )
+
+                pending.setCacheExtra(
+                    resolution.2,
+                    forKey: "OjzOua0LkOegX7pQdgMksw"
+                )
             }
-            saveWatch(pending, actions: selectedBackupActions) { [weak self] in
+
+            saveWatch(
+                pending,
+                actions: selectedBackupActions
+            ) { [weak self] in
                 self?.clearStagedChanges()
                 self?.syncWatchUltraFaceClass()
             }
-        } catch { report(error) }
+
+        } catch {
+            report(error)
+        }
     }
 
     private func originalWatchCache() throws -> GestaltPlist {
-        // Automatic pre-write backups preserve the state before the first Ultra
-        // edit, including across reloads and switching back from class 38.
         if let id = watchDeviceID {
             for backup in try GestaltBackupStore.list(deviceID: id).reversed() {
                 guard let data = try? GestaltBackupStore.data(for: backup),
-                      let dict = try? WatchMGWire.decode(data) else { continue }
+                      let dict = try? WatchMGWire.decode(data) else {
+                    continue
+                }
+
                 let candidate = GestaltPlist(dict: dict)
-                if WatchTweakCatalog.faceLayout(plist: candidate, build: watch.build) != nil {
+
+                if WatchTweakCatalog.faceLayout(
+                    plist: candidate,
+                    build: watch.build
+                ) != nil {
                     return candidate
                 }
             }
         }
-        guard let watchSnapshot else { throw WatchMGWire.failure(String(localized: "Reload Apple Watch before saving.")) }
-        return GestaltPlist(dict: try WatchMGWire.decode(watchSnapshot))
+
+        guard let watchSnapshot else {
+            throw WatchMGWire.failure(
+                String(localized: "Reload Apple Watch before saving.")
+            )
+        }
+
+        return GestaltPlist(
+            dict: try WatchMGWire.decode(watchSnapshot)
+        )
     }
+
+    // MARK: - Apple Watch Loading
 
     private func loadWatch() {
         isBusy = true
         notice = nil
+
         let generation = watchGeneration
+
         Task {
-            defer { isBusy = false }
+            defer {
+                isBusy = false
+            }
+
             do {
                 let id = try await watch.identify()
                 let data = try await watch.read(deviceID: id)
-                guard generation == watchGeneration else { return }
-                if watchDeviceID != id { clearStagedChanges() }
+
+                guard generation == watchGeneration else {
+                    return
+                }
+
+                if watchDeviceID != id {
+                    clearStagedChanges()
+                }
+
                 watchDeviceID = id
                 watchSnapshot = data
-                plist = GestaltPlist(dict: try WatchMGWire.decode(data))
-                if !selectedWatchTweaks.contains("ultra") { syncWatchUltraFaceClass() }
+
+                plist = GestaltPlist(
+                    dict: try WatchMGWire.decode(data)
+                )
+
+                if !selectedWatchTweaks.contains("ultra") {
+                    syncWatchUltraFaceClass()
+                }
+
                 isDirty = false
                 refreshBackups()
+
             } catch {
                 plist = nil
                 watchSnapshot = nil
@@ -553,62 +1035,150 @@ final class GestaltViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Apple Watch Backup
+
     private func backupWatch() {
-        guard let id = watchDeviceID else { return }
+        guard let id = watchDeviceID else {
+            return
+        }
+
         isBusy = true
+
         Task {
-            defer { isBusy = false }
+            defer {
+                isBusy = false
+            }
+
             do {
                 let data = try await watch.read(deviceID: id)
-                _ = try GestaltBackupStore.create(from: data, deviceID: id, record: .init(source: .manual, actions: [], changes: []))
+
+                _ = try GestaltBackupStore.create(
+                    from: data,
+                    deviceID: id,
+                    record: .init(
+                        source: .manual,
+                        actions: [],
+                        changes: []
+                    )
+                )
+
                 refreshBackups()
-                notice = GestaltNotice(kind: .backupCreated, message: String(localized: "Apple Watch backup saved on this iPhone."))
-            } catch { report(error) }
+
+                notice = GestaltNotice(
+                    kind: .backupCreated,
+                    message: String(
+                        localized: "Apple Watch backup saved on this iPhone."
+                    )
+                )
+
+            } catch {
+                report(error)
+            }
         }
     }
 
-    private func saveWatch(_ pending: GestaltPlist, source: GestaltBackupRecord.Source = .modification, actions: [String] = [], completion: (() -> Void)?) {
-        guard let id = watchDeviceID, let snapshot = watchSnapshot else {
-            report(WatchMGWire.failure(String(localized: "Reload Apple Watch before saving.")))
+    // MARK: - Apple Watch Save
+
+    private func saveWatch(
+        _ pending: GestaltPlist,
+        source: GestaltBackupRecord.Source = .modification,
+        actions: [String] = [],
+        completion: (() -> Void)?
+    ) {
+
+        guard let id = watchDeviceID,
+              let snapshot = watchSnapshot else {
+            report(
+                WatchMGWire.failure(
+                    String(localized: "Reload Apple Watch before saving.")
+                )
+            )
             return
         }
+
         isBusy = true
         notice = nil
+
         let generation = watchGeneration
+
         Task {
-            defer { isBusy = false }
+            defer {
+                isBusy = false
+            }
+
             do {
-                let data = try PropertyListSerialization.data(fromPropertyList: pending.dict, format: .binary, options: 0)
-                let automaticBackup = try GestaltBackupStore.create(from: snapshot, deviceID: id,
-                    record: try .modification(from: snapshot, to: pending.dict, source: source, actions: actions))
-                try await watch.write(data, deviceID: id, expectedHash: WatchMGWire.digest(snapshot))
-                guard generation == watchGeneration else { return }
+                let data = try PropertyListSerialization.data(
+                    fromPropertyList: pending.dict,
+                    format: .binary,
+                    options: 0
+                )
+
+                let automaticBackup = try GestaltBackupStore.create(
+                    from: snapshot,
+                    deviceID: id,
+                    record: try .modification(
+                        from: snapshot,
+                        to: pending.dict,
+                        source: source,
+                        actions: actions
+                    )
+                )
+
+                try await watch.write(
+                    data,
+                    deviceID: id,
+                    expectedHash: WatchMGWire.digest(snapshot)
+                )
+
+                guard generation == watchGeneration else {
+                    return
+                }
+
                 let verified = try await watch.read(deviceID: id)
-                guard generation == watchGeneration else { return }
+
+                guard generation == watchGeneration else {
+                    return
+                }
+
                 let dictionary = try WatchMGWire.decode(verified)
-                guard NSDictionary(dictionary: dictionary).isEqual(to: pending.dict) else {
+
+                guard NSDictionary(dictionary: dictionary)
+                    .isEqual(to: pending.dict) else {
                     throw GestaltEditError.verificationFailed
                 }
+
                 try? GestaltBackupStore.markVerified(automaticBackup)
+
                 plist = GestaltPlist(dict: dictionary)
                 watchSnapshot = verified
                 isDirty = false
+
                 completion?()
                 refreshBackups()
-                // Restart only after both helper-side and iPhone-side readback
-                // verification succeeds. Keep restart errors separate: the MG
-                // write is already committed and must not be marked dirty/retried.
+
                 do {
                     try await watch.restartInterface(deviceID: id)
-                    notice = GestaltNotice(kind: .saved, message: String(localized: "Saved to Apple Watch and verified. Automatic watch interface restart requested."))
+
+                    notice = GestaltNotice(
+                        kind: .saved,
+                        message: String(
+                            localized: "Saved to Apple Watch and verified. Automatic watch interface restart requested."
+                        )
+                    )
+
                 } catch {
-                    notice = GestaltNotice(kind: .saved, message: String(
-                        format: String(localized: "Saved to Apple Watch and verified, but the automatic interface restart could not be confirmed. Restart Apple Watch manually if needed.\n%@"),
-                        error.localizedDescription
-                    ))
+                    notice = GestaltNotice(
+                        kind: .saved,
+                        message: String(
+                            format: String(
+                                localized: "Saved to Apple Watch and verified, but the automatic interface restart could not be confirmed. Restart Apple Watch manually if needed.\n%@"
+                            ),
+                            error.localizedDescription
+                        )
+                    )
                 }
+
             } catch {
-                // A timeout can occur after commit. Force a fresh read before any retry.
                 watchSnapshot = nil
                 isDirty = true
                 refreshBackups()
@@ -617,10 +1187,17 @@ final class GestaltViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Errors
+
     private func report(_ error: Error) {
-        notice = GestaltNotice(kind: .error, message: error.localizedDescription)
+        notice = GestaltNotice(
+            kind: .error,
+            message: error.localizedDescription
+        )
     }
 }
+
+// MARK: - Gestalt Errors
 
 private enum GestaltEditError: LocalizedError {
     case invalidPlist
@@ -632,12 +1209,23 @@ private enum GestaltEditError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidPlist: String(localized: "The MobileGestalt plist is not a valid dictionary.")
-        case .wrongDeviceBackup: String(localized: "This Siri AI identity backup belongs to a different device.")
-        case .missingOriginalIdentityBackup: String(localized: "This device is already spoofed, but no original identity backup was found. Restore an original MobileGestalt backup before starting Siri AI setup again.")
-        case .invalidBackup: String(localized: "The backup is not a valid MobileGestalt plist.")
-        case .verificationFailed: String(localized: "The MobileGestalt values after writing do not match the expected values.")
-        case .emptyModelName: String(localized: "The device model name cannot be empty.")
+        case .invalidPlist:
+            String(localized: "The MobileGestalt plist is not a valid dictionary.")
+
+        case .wrongDeviceBackup:
+            String(localized: "This Siri AI identity backup belongs to a different device.")
+
+        case .missingOriginalIdentityBackup:
+            String(localized: "This device is already spoofed, but no original identity backup was found. Restore an original MobileGestalt backup before starting Siri AI setup again.")
+
+        case .invalidBackup:
+            String(localized: "The backup is not a valid MobileGestalt plist.")
+
+        case .verificationFailed:
+            String(localized: "The MobileGestalt values after writing do not match the expected values.")
+
+        case .emptyModelName:
+            String(localized: "The device model name cannot be empty.")
         }
     }
 }

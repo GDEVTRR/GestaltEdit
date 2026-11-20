@@ -1,3 +1,4 @@
+
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
@@ -14,8 +15,7 @@ struct ContentView: View {
                     description: Text("On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported.")
                 )
             } else {
-                
-TabView {
+                TabView {
                     TweakWorkbench()
                         .tabItem {
                             Label("Tools", systemImage: "switch.2")
@@ -63,14 +63,16 @@ TabView {
 
 private struct TweakWorkbench: View {
     @EnvironmentObject private var viewModel: GestaltViewModel
-    @EnvironmentObject private var languageManager: LanguageManager
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
                     DeviceSelector(watch: viewModel.watch)
-                    if viewModel.plist == nil { deviceStatus }
+
+                    if viewModel.plist == nil {
+                        deviceStatus
+                    }
                 }
 
                 if viewModel.selectedDevice == .appleWatch {
@@ -83,13 +85,16 @@ private struct TweakWorkbench: View {
                     tweakSection(.ipad)
                     tweakSection(.hardware)
                     tweakSection(.audio)
+
                     Section {
                         DisclosureGroup("Settings Shortcuts") {
                             tweakRows(.settings)
                         }
+
                         DisclosureGroup("Internal & Research") {
                             tweakRows(.internalFeatures)
                         }
+
                         DisclosureGroup("Device Name") {
                             modelNameControls
                         }
@@ -100,6 +105,8 @@ private struct TweakWorkbench: View {
 
                 Section(String(localized: "Developer")) {
                     DeveloperFooter()
+
+                    GDEVTRDeveloperRow()
 
                     PlacardPromotionLink()
 
@@ -126,19 +133,45 @@ private struct TweakWorkbench: View {
             }
             .navigationTitle("GestaltEdit")
             .navigationBarTitleDisplayMode(.large)
-            .refreshable { viewModel.load() }
-            .safeAreaInset(edge: .bottom) {
-                if viewModel.hasStagedTweaks {
-                    applyBar
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        viewModel.applySelectedTweaks()
+                    } label: {
+                        Text("Apply")
+                            .fontWeight(.semibold)
+                    }
+                    .disabled(
+                        !viewModel.hasStagedTweaks || viewModel.isBusy
+                    )
                 }
+
+                ToolbarItem(placement: .principal) {
+                    if viewModel.hasStagedTweaks {
+                        Text(
+                            String(
+                                format: String(localized: "%d pending changes"),
+                                viewModel.stagedChangeCount
+                            )
+                        )
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .refreshable {
+                viewModel.load()
             }
         }
     }
 
-    private func tweakSection(_ category: GestaltTweakCategory) -> some View {
+    private func tweakSection(
+        _ category: GestaltTweakCategory
+    ) -> some View {
         Section(category.label) {
             if category == .ipad {
                 tweakRow(.iPadOS)
+
                 DisclosureGroup("Individual iPad Options") {
                     tweakRow(.stageManager)
                     tweakRow(.iPadApps)
@@ -146,41 +179,75 @@ private struct TweakWorkbench: View {
             } else {
                 tweakRows(category)
             }
+
             if category == .display {
-                Picker("Liquid Glass", selection: Binding<Int>(
-                    get: {
-                        if viewModel.selectedTweaks.contains(.enableLiquidGlassLowPerformance) { return 1 }
-                        if viewModel.selectedTweaks.contains(.disableLiquidGlassLowPerformance) { return 0 }
-                        return -1
-                    },
-                    set: { value in
-                        viewModel.setTweak(.enableLiquidGlassLowPerformance, enabled: false)
-                        viewModel.setTweak(.disableLiquidGlassLowPerformance, enabled: false)
-                        if value >= 0 {
-                            viewModel.setTweak(value == 1 ? .enableLiquidGlassLowPerformance : .disableLiquidGlassLowPerformance, enabled: true)
+                Picker(
+                    "Liquid Glass",
+                    selection: Binding<Int>(
+                        get: {
+                            if viewModel.isTweakEnabled(
+                                .enableLiquidGlassLowPerformance
+                            ) {
+                                return 1
+                            }
+
+                            if viewModel.isTweakEnabled(
+                                .disableLiquidGlassLowPerformance
+                            ) {
+                                return 0
+                            }
+
+                            return -1
+                        },
+                        set: { value in
+                            viewModel.setTweak(
+                                .enableLiquidGlassLowPerformance,
+                                enabled: false
+                            )
+
+                            viewModel.setTweak(
+                                .disableLiquidGlassLowPerformance,
+                                enabled: false
+                            )
+
+                            if value >= 0 {
+                                viewModel.setTweak(
+                                    value == 1
+                                        ? .enableLiquidGlassLowPerformance
+                                        : .disableLiquidGlassLowPerformance,
+                                    enabled: true
+                                )
+                            }
                         }
-                    }
-                )) {
+                    )
+                ) {
                     Text("No Change").tag(-1)
                     Text("Reduced Effects").tag(1)
                     Text("Full Effects").tag(0)
                 }
+
                 DisclosureGroup("AOD Options") {
                     tweakRow(.alwaysOnDisplayVibrancy)
                     tweakRow(.aodHighLuminance)
                     tweakRow(.aodFlipbook)
                 }
             }
+
             if category == .region {
                 Toggle(
                     isOn: Binding(
-                        get: { viewModel.stagesAIRegion },
-                        set: { viewModel.setAIRegion(enabled: $0) }
+                        get: {
+                            viewModel.stagesAIRegion
+                        },
+                        set: {
+                            viewModel.setAIRegion(enabled: $0)
+                        }
                     )
                 ) {
                     VStack(alignment: .leading, spacing: 3) {
                         HStack(spacing: 6) {
                             Text("Enable Siri AI")
+
                             if viewModel.requiresForcedAIEnable {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .font(.caption)
@@ -190,13 +257,23 @@ private struct TweakWorkbench: View {
                         }
                     }
                 }
-                Picker("Device Region", selection: Binding<String?>(
-                    get: { viewModel.stagedAIRegionPresetID },
-                    set: { viewModel.setRegionPreset($0) }
-                )) {
+
+                Picker(
+                    "Device Region",
+                    selection: Binding<String?>(
+                        get: {
+                            viewModel.stagedAIRegionPresetID
+                        },
+                        set: {
+                            viewModel.setRegionPreset($0)
+                        }
+                    )
+                ) {
                     Text("No Change").tag(String?.none)
+
                     ForEach(GestaltRegionPreset.all) { region in
-                        Text(region.title).tag(String?.some(region.id))
+                        Text(region.title)
+                            .tag(String?.some(region.id))
                     }
                 }
                 .disabled(viewModel.stagesAIRegion)
@@ -204,14 +281,24 @@ private struct TweakWorkbench: View {
         }
     }
 
-    private func tweakRows(_ category: GestaltTweakCategory) -> some View {
+    private func tweakRows(
+        _ category: GestaltTweakCategory
+    ) -> some View {
         let customControls: Set<GestaltTweakID> = [
-            .supportsDynamicIsland, .alwaysOnDisplayVibrancy, .aodHighLuminance, .aodFlipbook,
-            .enableLiquidGlassLowPerformance, .disableLiquidGlassLowPerformance
+            .supportsDynamicIsland,
+            .alwaysOnDisplayVibrancy,
+            .aodHighLuminance,
+            .aodFlipbook,
+            .enableLiquidGlassLowPerformance,
+            .disableLiquidGlassLowPerformance
         ]
+
         let definitions = GestaltTweakCatalog.definitions.filter {
-            $0.category == category && !customControls.contains($0.id) && $0.isAvailable()
+            $0.category == category
+                && !customControls.contains($0.id)
+                && $0.isAvailable()
         }
+
         return ForEach(definitions) { definition in
             tweakRow(definition.id)
         }
@@ -219,23 +306,26 @@ private struct TweakWorkbench: View {
 
     @ViewBuilder
     private func tweakRow(_ id: GestaltTweakID) -> some View {
-        if let definition = GestaltTweakCatalog.definition(for: id), definition.isAvailable() {
-            let included = (viewModel.selectedTweaks.contains(.iPadOS)
-                && GestaltTweakCatalog.iPadIncludedTweaks.contains(id))
+        if let definition = GestaltTweakCatalog.definition(for: id),
+           definition.isAvailable() {
+
+            let included = (
+                viewModel.isTweakEnabled(.iPadOS)
+                && GestaltTweakCatalog.iPadIncludedTweaks.contains(id)
+            )
+
             TweakToggle(
-    definition: definition,
-    isOn: Binding(
-        get: {
-            included
-                || viewModel.selectedTweaks.contains(id)
-                || viewModel.isTweakApplied(id)
-        },
-        set: {
-            viewModel.setTweak(id, enabled: $0)
-        }
-    ),
-    included: included
-)
+                definition: definition,
+                isOn: Binding(
+                    get: {
+                        included || viewModel.isTweakEnabled(id)
+                    },
+                    set: {
+                        viewModel.setTweak(id, enabled: $0)
+                    }
+                ),
+                included: included
+            )
         }
     }
 
@@ -246,12 +336,15 @@ private struct TweakWorkbench: View {
                 if viewModel.isBusy || !viewModel.hasAttemptedLoad {
                     ProgressView()
                         .controlSize(.small)
+
                     Text("Reading MobileGestalt…")
                 } else {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
+
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Unable to read MobileGestalt")
+
                         Button("Reload", action: viewModel.load)
                             .font(.footnote)
                     }
@@ -262,7 +355,11 @@ private struct TweakWorkbench: View {
                 Text("Connected")
                     .foregroundStyle(.green)
             } label: {
-                Label(viewModel.aiRegionProfile?.marketingName ?? String(localized: "Current Device"), systemImage: "iphone")
+                Label(
+                    viewModel.aiRegionProfile?.marketingName
+                        ?? String(localized: "Current Device"),
+                    systemImage: "iphone"
+                )
             }
         }
     }
@@ -270,50 +367,118 @@ private struct TweakWorkbench: View {
     private var dynamicIslandSection: some View {
         Section("Dynamic Island") {
             tweakRow(.supportsDynamicIsland)
-            if viewModel.selectedTweaks.contains(.supportsDynamicIsland)
-    || viewModel.isTweakApplied(.supportsDynamicIsland)
-    || viewModel.dynamicIslandSubtype != nil {
-                Picker("Island Layout", selection: $viewModel.dynamicIslandSubtype) {
-                    Text("Keep Current Layout").tag(Int?.none)
+
+            if viewModel.isTweakEnabled(.supportsDynamicIsland)
+                || viewModel.dynamicIslandSubtype != nil {
+
+                Picker(
+                    "Island Layout",
+                    selection: $viewModel.dynamicIslandSubtype
+                ) {
+                    Text("Keep Current Layout")
+                        .tag(Int?.none)
+
                     ForEach(DynamicIslandOption.all) { option in
-                        Text(option.title).tag(Int?.some(option.subtype))
+                        Text(option.title)
+                            .tag(Int?.some(option.subtype))
                     }
                 }
             }
         }
-        .onChange(of: viewModel.selectedTweaks.contains(.supportsDynamicIsland)) { _, enabled in
-            if !enabled { viewModel.dynamicIslandSubtype = nil }
+        .onChange(
+            of: viewModel.isTweakEnabled(.supportsDynamicIsland)
+        ) { _, enabled in
+            if !enabled {
+                viewModel.dynamicIslandSubtype = nil
+            }
         }
     }
 
     @ViewBuilder
     private var modelNameControls: some View {
-        Toggle("Change model name in About", isOn: $viewModel.changesModelName)
+        Toggle(
+            "Change model name in About",
+            isOn: $viewModel.changesModelName
+        )
+
         if viewModel.changesModelName {
             TextField("Model Name", text: $viewModel.modelName)
                 .textInputAutocapitalization(.words)
         }
     }
+}
 
-    private var applyBar: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(String(format: String(localized: "%d pending changes"), viewModel.stagedChangeCount))
-                    .font(.subheadline.weight(.semibold))
+// MARK: - GDEVTR Developer
+
+private struct GDEVTRDeveloperRow: View {
+    private let avatarURL = URL(
+        string: "https://avatars.githubusercontent.com/u/257790167?v=4&size=64"
+    )!
+
+    private let githubURL = URL(
+        string: "https://github.com/GDEVTRR"
+    )!
+
+    var body: some View {
+        Link(destination: githubURL) {
+            HStack(spacing: 12) {
+                AsyncImage(url: avatarURL) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+
+                    case .empty:
+                        ProgressView()
+
+                    case .failure:
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(.secondary)
+
+                    @unknown default:
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("GDEVTR")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.primary)
+
+                    Text("Forked")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "arrow.up.right")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-            Spacer()
-            Button("Apply") { viewModel.applySelectedTweaks() }
-                .buttonStyle(.borderedProminent)
-                .disabled(viewModel.isBusy)
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.bar)
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("GDEVTR, Forked, GitHub")
     }
 }
 
+// MARK: - Placard
+
 private struct PlacardPromotionLink: View {
-    private let placardURL = URL(string: "https://github.com/frs0n/placard")!
+    private let placardURL = URL(
+        string: "https://github.com/frs0n/placard"
+    )!
 
     var body: some View {
         Link(destination: placardURL) {
@@ -322,11 +487,17 @@ private struct PlacardPromotionLink: View {
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .clipShape(
+                        RoundedRectangle(
+                            cornerRadius: 10,
+                            style: .continuous
+                        )
+                    )
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Placard")
                         .font(.body.weight(.medium))
+
                     Text("iPhone 动态壁纸")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -337,22 +508,40 @@ private struct PlacardPromotionLink: View {
             .frame(minHeight: 40)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Placard，iPhone 动态壁纸，点击打开 GitHub")
+        .accessibilityLabel(
+            "Placard，iPhone 动态壁纸，点击打开 GitHub"
+        )
     }
 
     private var placardIcon: Image {
-        guard let url = Bundle.main.url(forResource: "PlacardIcon", withExtension: "png"),
-              let image = UIImage(contentsOfFile: url.path) else {
-            return Image(systemName: "rectangle.portrait.on.rectangle.portrait.angled")
+        guard let url = Bundle.main.url(
+            forResource: "PlacardIcon",
+            withExtension: "png"
+        ),
+        let image = UIImage(contentsOfFile: url.path) else {
+            return Image(
+                systemName: "rectangle.portrait.on.rectangle.portrait.angled"
+            )
         }
+
         return Image(uiImage: image)
     }
 }
 
+// MARK: - Original Developer
+
 private struct DeveloperFooter: View {
-    private let douyinURL = URL(string: "https://v.douyin.com/hHHMAlF5bE0/")!
-    private let xURL = URL(string: "https://x.com/Frs0n_")!
-    private let githubURL = URL(string: "https://github.com/frs0n")!
+    private let douyinURL = URL(
+        string: "https://v.douyin.com/hHHMAlF5bE0/"
+    )!
+
+    private let xURL = URL(
+        string: "https://x.com/Frs0n_"
+    )!
+
+    private let githubURL = URL(
+        string: "https://github.com/frs0n"
+    )!
 
     var body: some View {
         HStack(spacing: 12) {
@@ -377,7 +566,11 @@ private struct DeveloperFooter: View {
         .frame(minHeight: 44)
     }
 
-    private func socialLink(_ image: String, label: String, destination: URL) -> some View {
+    private func socialLink(
+        _ image: String,
+        label: String,
+        destination: URL
+    ) -> some View {
         Link(destination: destination) {
             Image(image)
                 .resizable()
@@ -392,19 +585,26 @@ private struct DeveloperFooter: View {
     }
 
     private var avatarImage: Image {
-        guard let url = Bundle.main.url(forResource: "SUSSAvatar", withExtension: "jpg"),
-              let image = UIImage(contentsOfFile: url.path) else {
+        guard let url = Bundle.main.url(
+            forResource: "SUSSAvatar",
+            withExtension: "jpg"
+        ),
+        let image = UIImage(contentsOfFile: url.path) else {
             return Image(systemName: "person.crop.circle")
         }
+
         return Image(uiImage: image)
     }
 }
+
+// MARK: - Tweak Toggle
 
 private struct TweakToggle: View {
     let definition: GestaltTweakDefinition
     @Binding var isOn: Bool
 
     var included = false
+
     @State private var showsDetails = false
 
     var body: some View {
@@ -413,6 +613,7 @@ private struct TweakToggle: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 6) {
                         Text(definition.title)
+
                         if definition.isRisky {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.caption)
@@ -423,7 +624,15 @@ private struct TweakToggle: View {
                 }
             }
             .disabled(included)
-            if definition.isRisky || definition.showsDetails || [.supportsDynamicIsland, .chargeLimit, .alwaysOnDisplayVibrancy].contains(definition.id) {
+
+            if definition.isRisky
+                || definition.showsDetails
+                || [
+                    .supportsDynamicIsland,
+                    .chargeLimit,
+                    .alwaysOnDisplayVibrancy
+                ].contains(definition.id) {
+
                 Button {
                     showsDetails = true
                 } label: {
@@ -431,22 +640,32 @@ private struct TweakToggle: View {
                         .frame(minWidth: 32, minHeight: 44)
                 }
                 .buttonStyle(.borderless)
-                .accessibilityLabel(Text("About \(definition.title)"))
+                .accessibilityLabel(
+                    Text("About \(definition.title)")
+                )
             }
         }
         .onChange(of: isOn) { _, enabled in
-            if enabled && definition.isRisky && !included { showsDetails = true }
+            if enabled && definition.isRisky && !included {
+                showsDetails = true
+            }
         }
-        .alert(definition.title, isPresented: $showsDetails) {
-            Button("OK", role: .cancel) { }
+        .alert(
+            definition.title,
+            isPresented: $showsDetails
+        ) {
+            Button("OK", role: .cancel) {}
         } message: {
             Text(definition.detail)
         }
     }
 }
 
+// MARK: - Backup Library
+
 private struct BackupLibrary: View {
     @EnvironmentObject private var viewModel: GestaltViewModel
+
     @State private var showsBackupImporter = false
 
     var body: some View {
@@ -456,14 +675,22 @@ private struct BackupLibrary: View {
                     Button {
                         viewModel.createBackup()
                     } label: {
-                        Label("Back Up Current MobileGestalt", systemImage: "plus.circle.fill")
+                        Label(
+                            "Back Up Current MobileGestalt",
+                            systemImage: "plus.circle.fill"
+                        )
                     }
-                    .disabled(viewModel.plist == nil || viewModel.isBusy)
+                    .disabled(
+                        viewModel.plist == nil || viewModel.isBusy
+                    )
 
                     Button {
                         showsBackupImporter = true
                     } label: {
-                        Label("Import Backup", systemImage: "square.and.arrow.down")
+                        Label(
+                            "Import Backup",
+                            systemImage: "square.and.arrow.down"
+                        )
                     }
                     .disabled(viewModel.isBusy)
                 }
@@ -480,16 +707,27 @@ private struct BackupLibrary: View {
 
                 Section("Local Backups") {
                     if ordinaryBackups.isEmpty {
-                        Label("No Backups", systemImage: "archivebox")
-                            .foregroundStyle(.secondary)
+                        Label(
+                            "No Backups",
+                            systemImage: "archivebox"
+                        )
+                        .foregroundStyle(.secondary)
                     } else {
                         backupRows(ordinaryBackups)
                     }
                 }
             }
-            .navigationTitle(viewModel.selectedDevice == .appleWatch ? String(localized: "Apple Watch Backups") : String(localized: "Restore"))
-            .refreshable { viewModel.refreshBackups() }
-            .onAppear { viewModel.refreshBackups() }
+            .navigationTitle(
+                viewModel.selectedDevice == .appleWatch
+                    ? String(localized: "Apple Watch Backups")
+                    : String(localized: "Restore")
+            )
+            .refreshable {
+                viewModel.refreshBackups()
+            }
+            .onAppear {
+                viewModel.refreshBackups()
+            }
             .fileImporter(
                 isPresented: $showsBackupImporter,
                 allowedContentTypes: [.propertyList],
@@ -497,32 +735,47 @@ private struct BackupLibrary: View {
             ) { result in
                 switch result {
                 case .success(let urls):
-                    if let url = urls.first { viewModel.importBackup(from: url) }
+                    if let url = urls.first {
+                        viewModel.importBackup(from: url)
+                    }
+
                 case .failure(let error):
-                    viewModel.notice = GestaltNotice(kind: .error, message: error.localizedDescription)
+                    viewModel.notice = GestaltNotice(
+                        kind: .error,
+                        message: error.localizedDescription
+                    )
                 }
             }
-
         }
     }
+
     private var identityBackups: [GestaltBackup] {
-        viewModel.backups.filter { $0.purpose == .siriAIIdentityRestore }
+        viewModel.backups.filter {
+            $0.purpose == .siriAIIdentityRestore
+        }
     }
 
     private var ordinaryBackups: [GestaltBackup] {
-        viewModel.backups.filter { $0.purpose == .standard }
+        viewModel.backups.filter {
+            $0.purpose == .standard
+        }
     }
 
-    private func backupRows(_ backups: [GestaltBackup]) -> some View {
+    private func backupRows(
+        _ backups: [GestaltBackup]
+    ) -> some View {
         ForEach(backups) { backup in
             BackupRow(backup: backup)
         }
         .onDelete { offsets in
-            for index in offsets { viewModel.delete(backups[index]) }
+            for index in offsets {
+                viewModel.delete(backups[index])
+            }
         }
     }
-
 }
+
+// MARK: - Backup Row
 
 private struct BackupRow: View {
     let backup: GestaltBackup
@@ -533,103 +786,192 @@ private struct BackupRow: View {
         } label: {
             VStack(alignment: .leading, spacing: 4) {
                 Text(backup.reason)
-                Text(backup.createdAt, format: .dateTime.year().month().day().hour().minute().second())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+
+                Text(
+                    backup.createdAt,
+                    format: .dateTime
+                        .year()
+                        .month()
+                        .day()
+                        .hour()
+                        .minute()
+                        .second()
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
             }
         }
     }
 }
 
+// MARK: - Backup Detail
+
 private struct BackupDetail: View {
     @EnvironmentObject private var viewModel: GestaltViewModel
+
     @State private var showsRestoreConfirmation = false
     @State private var showsChanges = false
+
     let backup: GestaltBackup
 
     var body: some View {
         List {
             Section {
                 Text(backup.reason)
-                Text(backup.createdAt, format: .dateTime.year().month().day().hour().minute().second())
-                    .foregroundStyle(.secondary)
-                Text(ByteCountFormatter.string(fromByteCount: backup.byteCount, countStyle: .file))
-                    .foregroundStyle(.secondary)
+
+                Text(
+                    backup.createdAt,
+                    format: .dateTime
+                        .year()
+                        .month()
+                        .day()
+                        .hour()
+                        .minute()
+                        .second()
+                )
+                .foregroundStyle(.secondary)
+
+                Text(
+                    ByteCountFormatter.string(
+                        fromByteCount: backup.byteCount,
+                        countStyle: .file
+                    )
+                )
+                .foregroundStyle(.secondary)
             }
+
             if let record = backup.record,
-               record.source == .modification || record.source == .restore || record.source == .identityRecovery {
+               record.source == .modification
+                || record.source == .restore
+                || record.source == .identityRecovery {
+
                 Section {
-                    DisclosureGroup(isExpanded: $showsChanges) {
+                    DisclosureGroup(
+                        isExpanded: $showsChanges
+                    ) {
                         if record.changes.isEmpty {
-                            Text("No Field Changes").foregroundStyle(.secondary)
+                            Text("No Field Changes")
+                                .foregroundStyle(.secondary)
                         }
+
                         ForEach(record.changes) { change in
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(
+                                alignment: .leading,
+                                spacing: 8
+                            ) {
                                 if let title = fieldTitle(for: change) {
                                     Text(title)
-                                    Text(change.path.joined(separator: " › "))
-                                        .font(.caption.monospaced())
-                                        .foregroundStyle(.secondary)
-                                } else {
-                                    Text(change.path.joined(separator: " › "))
-                                        .font(.subheadline.monospaced())
-                                }
-                                Text(change.before ?? String(localized: "Not Present"))
+
+                                    Text(
+                                        change.path.joined(separator: " › ")
+                                    )
+                                    .font(.caption.monospaced())
                                     .foregroundStyle(.secondary)
-                                Image(systemName: "arrow.down").foregroundStyle(.tertiary)
+                                } else {
+                                    Text(
+                                        change.path.joined(separator: " › ")
+                                    )
+                                    .font(.subheadline.monospaced())
+                                }
+
+                                Text(
+                                    change.before
+                                        ?? String(localized: "Not Present")
+                                )
+                                .foregroundStyle(.secondary)
+
+                                Image(systemName: "arrow.down")
+                                    .foregroundStyle(.tertiary)
                                     .accessibilityLabel("Changes to")
-                                Text(change.after ?? String(localized: "Not Present"))
+
+                                Text(
+                                    change.after
+                                        ?? String(localized: "Not Present")
+                                )
                             }
                             .textSelection(.enabled)
                             .padding(.vertical, 4)
                         }
                     } label: {
-                        Text(record.verified ? String(localized: "Changes") : String(localized: "Requested Changes"))
+                        Text(
+                            record.verified
+                                ? String(localized: "Changes")
+                                : String(localized: "Requested Changes")
+                        )
                     }
                 }
             }
+
             Section {
-                ShareLink(item: backup.url) { Label("Export Backup", systemImage: "square.and.arrow.up") }
-                Button("Restore Backup") { showsRestoreConfirmation = true }
-                    .disabled(viewModel.isBusy)
-                    .confirmationDialog(
+                ShareLink(item: backup.url) {
+                    Label(
+                        "Export Backup",
+                        systemImage: "square.and.arrow.up"
+                    )
+                }
+
+                Button("Restore Backup") {
+                    showsRestoreConfirmation = true
+                }
+                .disabled(viewModel.isBusy)
+                .confirmationDialog(
+                    backup.purpose == .siriAIIdentityRestore
+                        ? String(localized: "Remove Device Spoof?")
+                        : String(localized: "Restore This MobileGestalt Backup?"),
+                    isPresented: $showsRestoreConfirmation,
+                    titleVisibility: .visible
+                ) {
+                    Button(
                         backup.purpose == .siriAIIdentityRestore
-                            ? String(localized: "Remove Device Spoof?")
-                            : String(localized: "Restore This MobileGestalt Backup?"),
-                        isPresented: $showsRestoreConfirmation,
-                        titleVisibility: .visible
+                            ? String(localized: "Remove Device Spoof")
+                            : String(localized: "Restore and Write"),
+                        role: .destructive
                     ) {
-                        Button(backup.purpose == .siriAIIdentityRestore
-                               ? String(localized: "Remove Device Spoof")
-                               : String(localized: "Restore and Write"), role: .destructive) {
-                            viewModel.restore(backup)
-                        }
-                        Button("Cancel", role: .cancel) {}
-                    } message: {
-                        if backup.purpose == .siriAIIdentityRestore {
-                            Text("Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing.")
-                        } else {
-                            Text(viewModel.selectedDevice == .appleWatch
-                                 ? String(localized: "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring.")
-                                 : String(localized: "The current file will be backed up first. SpringBoard will refresh automatically after restoring."))
-                        }
+                        viewModel.restore(backup)
                     }
+
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    if backup.purpose == .siriAIIdentityRestore {
+                        Text("Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing.")
+                    } else {
+                        Text(
+                            viewModel.selectedDevice == .appleWatch
+                                ? String(localized: "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring.")
+                                : String(localized: "The current file will be backed up first. SpringBoard will refresh automatically after restoring.")
+                        )
+                    }
+                }
             }
         }
         .navigationTitle("Backup Details")
         .navigationBarTitleDisplayMode(.inline)
-
     }
 
-    private func fieldTitle(for change: GestaltBackupChange) -> String? {
-        guard change.path.count == 2, change.path.first == "CacheExtra", let key = change.path.dropFirst().first else {
+    private func fieldTitle(
+        for change: GestaltBackupChange
+    ) -> String? {
+        guard change.path.count == 2,
+              change.path.first == "CacheExtra",
+              let key = change.path.dropFirst().first else {
             return nil
         }
-        let matches = GestaltTweakCatalog.definitions.filter { $0.values[key] != nil }
-        if matches.count == 1 { return matches[0].title }
-        return WatchTweakCatalog.definitions.first { $0.keys.contains(key) }?.title
+
+        let matches = GestaltTweakCatalog.definitions.filter {
+            $0.values[key] != nil
+        }
+
+        if matches.count == 1 {
+            return matches[0].title
+        }
+
+        return WatchTweakCatalog.definitions.first {
+            $0.keys.contains(key)
+        }?.title
     }
 }
+
+// MARK: - Advanced Editor
 
 private struct AdvancedGestaltEditor: View {
     @EnvironmentObject private var viewModel: GestaltViewModel
@@ -638,12 +980,17 @@ private struct AdvancedGestaltEditor: View {
     @State private var activeEditor: FieldEditorRoute?
 
     private var cacheExtraKeys: [String] {
-        filtered(viewModel.plist?.cacheExtraKeys ?? [], section: .cacheExtra)
+        filtered(
+            viewModel.plist?.cacheExtraKeys ?? [],
+            section: .cacheExtra
+        )
     }
 
     private var topLevelKeys: [String] {
         filtered(
-            viewModel.plist?.topLevelKeys.filter { $0 != "CacheExtra" } ?? [],
+            viewModel.plist?.topLevelKeys.filter {
+                $0 != "CacheExtra"
+            } ?? [],
             section: .topLevel
         )
     }
@@ -654,10 +1001,20 @@ private struct AdvancedGestaltEditor: View {
                 KeySection(
                     title: "CacheExtra",
                     keys: cacheExtraKeys,
-                    value: { value(for: PlistKey(section: .cacheExtra, key: $0)) },
+                    value: {
+                        value(
+                            for: PlistKey(
+                                section: .cacheExtra,
+                                key: $0
+                            )
+                        )
+                    },
                     select: {
                         activeEditor = .edit(
-                            PlistKey(section: .cacheExtra, key: $0)
+                            PlistKey(
+                                section: .cacheExtra,
+                                key: $0
+                            )
                         )
                     }
                 )
@@ -665,30 +1022,50 @@ private struct AdvancedGestaltEditor: View {
                 KeySection(
                     title: String(localized: "Top Level"),
                     keys: topLevelKeys,
-                    value: { value(for: PlistKey(section: .topLevel, key: $0)) },
+                    value: {
+                        value(
+                            for: PlistKey(
+                                section: .topLevel,
+                                key: $0
+                            )
+                        )
+                    },
                     select: {
                         activeEditor = .edit(
-                            PlistKey(section: .topLevel, key: $0)
+                            PlistKey(
+                                section: .topLevel,
+                                key: $0
+                            )
                         )
                     }
                 )
             }
         }
         .navigationTitle("Advanced Field Editor")
-        .searchable(text: $searchText, prompt: "Search key or value")
+        .searchable(
+            text: $searchText,
+            prompt: "Search key or value"
+        )
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     activeEditor = .addCacheExtra
                 } label: {
                     Image(systemName: "plus")
                 }
                 .accessibilityLabel("Add CacheExtra Field")
-                .disabled(viewModel.plist == nil || viewModel.isBusy)
+                .disabled(
+                    viewModel.plist == nil || viewModel.isBusy
+                )
 
-                Button("Save", action: viewModel.applyChanges)
-                    .fontWeight(.semibold)
-                    .disabled(!viewModel.isDirty || viewModel.isBusy)
+                Button(
+                    "Save",
+                    action: viewModel.applyChanges
+                )
+                .fontWeight(.semibold)
+                .disabled(
+                    !viewModel.isDirty || viewModel.isBusy
+                )
             }
         }
         .sheet(item: $activeEditor) { editor in
@@ -698,26 +1075,48 @@ private struct AdvancedGestaltEditor: View {
                     ValueEditor(
                         key: key.key,
                         initialValue: value(for: key),
-                        save: { update($0, for: key) },
+                        save: {
+                            update($0, for: key)
+                        },
                         delete: key.section == .cacheExtra
-                            ? { deleteCacheExtraField(key.key) }
+                            ? {
+                                deleteCacheExtraField(key.key)
+                            }
                             : nil
                     )
+
                 case .addCacheExtra:
-                    AddCacheExtraFieldEditor(save: addCacheExtraField)
+                    AddCacheExtraFieldEditor(
+                        save: addCacheExtraField
+                    )
                 }
             }
             .presentationDetents([.medium, .large])
         }
     }
 
-    private func filtered(_ keys: [String], section: PlistSection) -> [String] {
-        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !query.isEmpty else { return keys }
+    private func filtered(
+        _ keys: [String],
+        section: PlistSection
+    ) -> [String] {
+        let query = searchText.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        guard !query.isEmpty else {
+            return keys
+        }
 
         return keys.filter { key in
-            let reference = PlistKey(section: section, key: key)
-            let info = PlistValueInfo.info(for: value(for: reference))
+            let reference = PlistKey(
+                section: section,
+                key: key
+            )
+
+            let info = PlistValueInfo.info(
+                for: value(for: reference)
+            )
+
             return key.localizedCaseInsensitiveContains(query)
                 || info.searchText.localizedCaseInsensitiveContains(query)
         }
@@ -727,45 +1126,74 @@ private struct AdvancedGestaltEditor: View {
         switch key.section {
         case .cacheExtra:
             viewModel.plist?.cacheExtra[key.key]
+
         case .topLevel:
             viewModel.plist?.value(forKey: key.key)
         }
     }
 
-    private func update(_ value: Any, for key: PlistKey) {
-        guard var plist = viewModel.plist else { return }
+    private func update(
+        _ value: Any,
+        for key: PlistKey
+    ) {
+        guard var plist = viewModel.plist else {
+            return
+        }
+
         switch key.section {
         case .cacheExtra:
             plist.setCacheExtra(value, forKey: key.key)
+
         case .topLevel:
             plist.setValue(value, forKey: key.key)
         }
+
         viewModel.plist = plist
         viewModel.isDirty = true
     }
 
-    private func addCacheExtraField(key: String, value: Any) throws {
-        guard var plist = viewModel.plist else { return }
-        let normalizedKey = key.trimmingCharacters(in: .whitespacesAndNewlines)
+    private func addCacheExtraField(
+        key: String,
+        value: Any
+    ) throws {
+        guard var plist = viewModel.plist else {
+            return
+        }
+
+        let normalizedKey = key.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
         guard !normalizedKey.isEmpty else {
             throw AddFieldError.emptyKey
         }
+
         guard plist.cacheExtra[normalizedKey] == nil else {
             throw AddFieldError.duplicateKey(normalizedKey)
         }
 
-        plist.setCacheExtra(value, forKey: normalizedKey)
+        plist.setCacheExtra(
+            value,
+            forKey: normalizedKey
+        )
+
         viewModel.plist = plist
         viewModel.isDirty = true
     }
 
     private func deleteCacheExtraField(_ key: String) {
-        guard var plist = viewModel.plist else { return }
+        guard var plist = viewModel.plist else {
+            return
+        }
+
         plist.removeCacheExtraValue(forKey: key)
+
         viewModel.plist = plist
         viewModel.isDirty = true
     }
 }
+
+// MARK: - Field Models
 
 private enum PlistSection: String {
     case cacheExtra
@@ -775,7 +1203,10 @@ private enum PlistSection: String {
 private struct PlistKey: Identifiable {
     let section: PlistSection
     let key: String
-    var id: String { "\(section.rawValue)/\(key)" }
+
+    var id: String {
+        "\(section.rawValue)/\(key)"
+    }
 }
 
 private enum FieldEditorRoute: Identifiable {
@@ -784,11 +1215,16 @@ private enum FieldEditorRoute: Identifiable {
 
     var id: String {
         switch self {
-        case .edit(let key): "edit/\(key.id)"
-        case .addCacheExtra: "add/cacheExtra"
+        case .edit(let key):
+            "edit/\(key.id)"
+
+        case .addCacheExtra:
+            "add/cacheExtra"
         }
     }
 }
+
+// MARK: - Add Field Errors
 
 private enum AddFieldError: LocalizedError {
     case emptyKey
@@ -798,11 +1234,19 @@ private enum AddFieldError: LocalizedError {
         switch self {
         case .emptyKey:
             String(localized: "Key cannot be empty.")
+
         case .duplicateKey(let key):
-            String(format: String(localized: "CacheExtra already contains the field: %@"), key)
+            String(
+                format: String(
+                    localized: "CacheExtra already contains the field: %@"
+                ),
+                key
+            )
         }
     }
 }
+
+// MARK: - Key Section
 
 private struct KeySection: View {
     let title: String
@@ -817,8 +1261,13 @@ private struct KeySection: View {
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(keys, id: \.self) { key in
-                    Button { select(key) } label: {
-                        KeyRow(key: key, value: value(key))
+                    Button {
+                        select(key)
+                    } label: {
+                        KeyRow(
+                            key: key,
+                            value: value(key)
+                        )
                     }
                     .buttonStyle(.plain)
                 }
@@ -827,12 +1276,15 @@ private struct KeySection: View {
     }
 }
 
+// MARK: - Key Row
+
 private struct KeyRow: View {
     let key: String
     let value: Any?
 
     var body: some View {
         let info = PlistValueInfo.info(for: value)
+
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(key)
@@ -840,12 +1292,15 @@ private struct KeyRow: View {
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                     .truncationMode(.middle)
+
                 Text(info.summary)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
             }
+
             Spacer()
+
             Image(systemName: "chevron.right")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.tertiary)
@@ -853,6 +1308,8 @@ private struct KeyRow: View {
         .contentShape(Rectangle())
     }
 }
+
+// MARK: - Value Editor
 
 private struct ValueEditor: View {
     @Environment(\.dismiss) private var dismiss
@@ -877,9 +1334,16 @@ private struct ValueEditor: View {
         self.initialValue = initialValue
         self.save = save
         self.delete = delete
+
         let kind = PlistValueKind.kind(of: initialValue)
+
         _kind = State(initialValue: kind)
-        _text = State(initialValue: PlistValueInfo.encode(initialValue, as: kind))
+        _text = State(
+            initialValue: PlistValueInfo.encode(
+                initialValue,
+                as: kind
+            )
+        )
     }
 
     var body: some View {
@@ -888,7 +1352,8 @@ private struct ValueEditor: View {
                 Section("Type") {
                     Picker("Type", selection: $kind) {
                         ForEach(PlistValueKind.allCases) { kind in
-                            Text(kind.label).tag(kind)
+                            Text(kind.label)
+                                .tag(kind)
                         }
                     }
                     .pickerStyle(.menu)
@@ -911,7 +1376,10 @@ private struct ValueEditor: View {
 
                 if delete != nil {
                     Section {
-                        Button("Delete Field", role: .destructive) {
+                        Button(
+                            "Delete Field",
+                            role: .destructive
+                        ) {
                             showsDeleteConfirmation = true
                         }
                         .frame(maxWidth: .infinity)
@@ -921,10 +1389,13 @@ private struct ValueEditor: View {
             .navigationTitle(key)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Done", action: commit)
                         .fontWeight(.semibold)
                 }
@@ -938,6 +1409,7 @@ private struct ValueEditor: View {
                     delete?()
                     dismiss()
                 }
+
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("The field will be removed from the file after you return to the editor and tap Save.")
@@ -947,13 +1419,21 @@ private struct ValueEditor: View {
 
     private func commit() {
         do {
-            save(try PlistValueInfo.parse(text, as: kind))
+            save(
+                try PlistValueInfo.parse(
+                    text,
+                    as: kind
+                )
+            )
+
             dismiss()
         } catch {
             errorMessage = error.localizedDescription
         }
     }
 }
+
+// MARK: - Add CacheExtra Field
 
 private struct AddCacheExtraFieldEditor: View {
     @Environment(\.dismiss) private var dismiss
@@ -969,7 +1449,11 @@ private struct AddCacheExtraFieldEditor: View {
         NavigationStack {
             Form {
                 Section("Field") {
-                    LabeledContent("Location", value: "CacheExtra")
+                    LabeledContent(
+                        "Location",
+                        value: "CacheExtra"
+                    )
+
                     TextField("Key", text: $key)
                         .font(.system(.body, design: .monospaced))
                         .autocorrectionDisabled()
@@ -979,7 +1463,8 @@ private struct AddCacheExtraFieldEditor: View {
                 Section("Type") {
                     Picker("Type", selection: $kind) {
                         ForEach(PlistValueKind.allCases) { kind in
-                            Text(kind.label).tag(kind)
+                            Text(kind.label)
+                                .tag(kind)
                         }
                     }
                     .pickerStyle(.menu)
@@ -1003,11 +1488,14 @@ private struct AddCacheExtraFieldEditor: View {
             .navigationTitle("Add Field")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add", action: commit)
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add Field", action: commit)
                         .fontWeight(.semibold)
                 }
             }
@@ -1016,7 +1504,11 @@ private struct AddCacheExtraFieldEditor: View {
 
     private func commit() {
         do {
-            let value = try PlistValueInfo.parse(text, as: kind)
+            let value = try PlistValueInfo.parse(
+                text,
+                as: kind
+            )
+
             try save(key, value)
             dismiss()
         } catch {
