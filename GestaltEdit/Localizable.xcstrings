@@ -1,1349 +1,1349 @@
-{
-  "sourceLanguage": "en",
-  "strings": {
-    "iOS 26 Is Not Supported": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS 26 Is Not Supported"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS 26 Desteklenmiyor"
-          }
-        }
-      }
-    },
-    "On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz üzerindeki MobileGestalt düzenlemesi için iOS / iPadOS 27 veya üzeri gerekir. iOS / iPadOS 26 desteklenmez."
-          }
-        }
-      }
-    },
-    "Tools": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tools"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Araçlar"
-          }
-        }
-      }
-    },
-    "Fields": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fields"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alanlar"
-          }
-        }
-      }
-    },
-    "Restore": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restore"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geri Yükle"
-          }
-        }
-      }
-    },
-    "Settings": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ayarlar"
-          }
-        }
-      }
-    },
-    "Settings Shortcuts": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings Shortcuts"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ayar Kısayolları"
-          }
-        }
-      }
-    },
-    "Internal & Research": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Internal & Research"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dahili ve Araştırma"
-          }
-        }
-      }
-    },
-    "Device Name": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Device Name"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz Adı"
-          }
-        }
-      }
-    },
-    "Advanced": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gelişmiş"
-          }
-        }
-      }
-    },
-    "Developer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Developer"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geliştirici"
-          }
-        }
-      }
-    },
-    "Support the Developer": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Support the Developer"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geliştiriciyi Destekle"
-          }
-        }
-      }
-    },
-    "Liquid Glass": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Liquid Glass"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Liquid Glass"
-          }
-        }
-      }
-    },
-    "No Change": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Change"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Değişiklik Yok"
-          }
-        }
-      }
-    },
-    "Reduced Effects": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reduced Effects"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Azaltılmış Efektler"
-          }
-        }
-      }
-    },
-    "Full Effects": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Full Effects"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tam Efektler"
-          }
-        }
-      }
-    },
-    "AOD Options": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AOD Options"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her Zaman Açık Ekran Seçenekleri"
-          }
-        }
-      }
-    },
-    "Enable Siri AI": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enable Siri AI"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Siri Yapay Zekâsını Etkinleştir"
-          }
-        }
-      }
-    },
-    "High Risk": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "High Risk"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yüksek Risk"
-          }
-        }
-      }
-    },
-    "Device Region": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Device Region"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz Bölgesi"
-          }
-        }
-      }
-    },
-    "Dynamic Island": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dynamic Island"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dynamic Island"
-          }
-        }
-      }
-    },
-    "Island Layout": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Island Layout"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ada Düzeni"
-          }
-        }
-      }
-    },
-    "Keep Current Layout": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep Current Layout"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mevcut Düzeni Koru"
-          }
-        }
-      }
-    },
-    "Change model name in About": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Change model name in About"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hakkında bölümündeki model adını değiştir"
-          }
-        }
-      }
-    },
-    "Model Name": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Model Name"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Model Adı"
-          }
-        }
-      }
-    },
-    "Reading MobileGestalt…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reading MobileGestalt…"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "MobileGestalt okunuyor…"
-          }
-        }
-      }
-    },
-    "Unable to read MobileGestalt": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unable to read MobileGestalt"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "MobileGestalt okunamadı"
-          }
-        }
-      }
-    },
-    "Reload": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reload"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden Yükle"
-          }
-        }
-      }
-    },
-    "Connected": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connected"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bağlandı"
-          }
-        }
-      }
-    },
-    "Current Device": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Current Device"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mevcut Cihaz"
-          }
-        }
-      }
-    },
-    "Apply": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apply"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygula"
-          }
-        }
-      }
-    },
-    "%d pending changes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d pending changes"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d bekleyen değişiklik"
-          }
-        }
-      }
-    },
-    "About %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "About %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ Hakkında"
-          }
-        }
-      }
-    },
-    "Back Up Current MobileGestalt": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back Up Current MobileGestalt"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mevcut MobileGestalt'ı Yedekle"
-          }
-        }
-      }
-    },
-    "Import Backup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import Backup"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yedek İçe Aktar"
-          }
-        }
-      }
-    },
-    "Siri AI": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Siri AI"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Siri Yapay Zekâsı"
-          }
-        }
-      }
-    },
-    "After the Siri AI model download finishes, use this backup to remove device spoofing. Face ID and dictation will work again after restarting, while Siri AI settings stay enabled.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "After the Siri AI model download finishes, use this backup to remove device spoofing. Face ID and dictation will work again after restarting, while Siri AI settings stay enabled."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Siri Yapay Zekâ modeli indirildikten sonra cihaz kimliği taklidini kaldırmak için bu yedeği kullan. Yeniden başlatmanın ardından Face ID ve dikte yeniden çalışır; Siri Yapay Zekâ ayarları etkin kalır."
-          }
-        }
-      }
-    },
-    "Local Backups": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Local Backups"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yerel Yedekler"
-          }
-        }
-      }
-    },
-    "No Backups": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Backups"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yedek Yok"
-          }
-        }
-      }
-    },
-    "Apple Watch Backups": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple Watch Backups"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Apple Watch Yedekleri"
-          }
-        }
-      }
-    },
-    "Backup Details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Backup Details"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yedek Ayrıntıları"
-          }
-        }
-      }
-    },
-    "No Field Changes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Field Changes"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alan Değişikliği Yok"
-          }
-        }
-      }
-    },
-    "Not Present": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not Present"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mevcut Değil"
-          }
-        }
-      }
-    },
-    "Changes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changes"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Değişiklikler"
-          }
-        }
-      }
-    },
-    "Requested Changes": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Requested Changes"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "İstenen Değişiklikler"
-          }
-        }
-      }
-    },
-    "Export Backup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Export Backup"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yedeği Dışa Aktar"
-          }
-        }
-      }
-    },
-    "Restore Backup": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restore Backup"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yedeği Geri Yükle"
-          }
-        }
-      }
-    },
-    "Remove Device Spoof?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove Device Spoof?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz Kimliği Taklidi Kaldırılsın mı?"
-          }
-        }
-      }
-    },
-    "Restore This MobileGestalt Backup?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restore This MobileGestalt Backup?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu MobileGestalt Yedeği Geri Yüklensin mi?"
-          }
-        }
-      }
-    },
-    "Remove Device Spoof": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove Device Spoof"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cihaz Kimliği Taklidini Kaldır"
-          }
-        }
-      }
-    },
-    "Restore and Write": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restore and Write"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geri Yükle ve Yaz"
-          }
-        }
-      }
-    },
-    "Cancel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "İptal"
-          }
-        }
-      }
-    },
-    "Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Önce Siri Yapay Zekâ modeli indirmesini tamamla. Özgün cihaz kimliğin geri yüklenir; yeniden başlatmanın ardından Face ID ve dikte yeniden çalışır. SiriMode ve diğer yapay zekâ ayarları etkin kalır. Yazma işleminden önce mevcut dosya yedeklenir."
-          }
-        }
-      }
-    },
-    "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Önce mevcut Apple Watch dosyası yedeklenir. Geri yüklemeden sonra saat arayüzü otomatik olarak yeniden başlatılır."
-          }
-        }
-      }
-    },
-    "The current file will be backed up first. SpringBoard will refresh automatically after restoring.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The current file will be backed up first. SpringBoard will refresh automatically after restoring."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Önce mevcut dosya yedeklenir. Geri yüklemeden sonra SpringBoard otomatik olarak yenilenir."
-          }
-        }
-      }
-    },
-    "Advanced Field Editor": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Advanced Field Editor"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gelişmiş Alan Düzenleyici"
-          }
-        }
-      }
-    },
-    "Search key or value": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search key or value"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anahtar veya değer ara"
-          }
-        }
-      }
-    },
-    "Add CacheExtra Field": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add CacheExtra Field"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CacheExtra Alanı Ekle"
-          }
-        }
-      }
-    },
-    "Save": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kaydet"
-          }
-        }
-      }
-    },
-    "Top Level": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Top Level"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Üst Seviye"
-          }
-        }
-      }
-    },
-    "No Results": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Results"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sonuç Yok"
-          }
-        }
-      }
-    },
-    "Type": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tür"
-          }
-        }
-      }
-    },
-    "Value": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Value"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Değer"
-          }
-        }
-      }
-    },
-    "Delete Field": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete Field"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alanı Sil"
-          }
-        }
-      }
-    },
-    "Delete CacheExtra Field?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete CacheExtra Field?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CacheExtra Alanı Silinsin mi?"
-          }
-        }
-      }
-    },
-    "Delete": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sil"
-          }
-        }
-      }
-    },
-    "The field will be removed from the file after you return to the editor and tap Save.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The field will be removed from the file after you return to the editor and tap Save."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Düzenleyiciye dönüp Kaydet'e dokunduğunda alan dosyadan kaldırılacak."
-          }
-        }
-      }
-    },
-    "Done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bitti"
-          }
-        }
-      }
-    },
-    "Field": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Field"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alan"
-          }
-        }
-      }
-    },
-    "Location": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Konum"
-          }
-        }
-      }
-    },
-    "Key": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Key"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anahtar"
-          }
-        }
-      }
-    },
-    "Add Field": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add Field"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alan Ekle"
-          }
-        }
-      }
-    },
-    "Key cannot be empty.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Key cannot be empty."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anahtar boş olamaz."
-          }
-        }
-      }
-    },
-    "CacheExtra already contains the field: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CacheExtra already contains the field: %@"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CacheExtra şu alanı zaten içeriyor: %@"
-          }
-        }
-      }
-    },
-    "Language": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Language"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dil"
-          }
-        }
-      }
-    },
-    "App Language": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App Language"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulama Dili"
-          }
-        }
-      }
-    },
-    "English": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "English"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "İngilizce"
-          }
-        }
-      }
-    },
-    "Türkçe": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Türkçe"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Türkçe"
-          }
-        }
-      }
-    },
-    "Choose the language used throughout the app.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose the language used throughout the app."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulama genelinde kullanılacak dili seç."
-          }
-        }
-      }
-    }
-  },
-  "version": "1.0"
+﻿{
+    "sourceLanguage":  "en",
+    "strings":  {
+                    "iOS 26 Is Not Supported":  {
+                                                    "extractionState":  "manual",
+                                                    "localizations":  {
+                                                                          "en":  {
+                                                                                     "stringUnit":  {
+                                                                                                        "state":  "translated",
+                                                                                                        "value":  "iOS 26 Is Not Supported"
+                                                                                                    }
+                                                                                 },
+                                                                          "tr":  {
+                                                                                     "stringUnit":  {
+                                                                                                        "state":  "translated",
+                                                                                                        "value":  "iOS 26 Desteklenmiyor"
+                                                                                                    }
+                                                                                 }
+                                                                      }
+                                                },
+                    "On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported.":  {
+                                                                                                                                 "extractionState":  "manual",
+                                                                                                                                 "localizations":  {
+                                                                                                                                                       "en":  {
+                                                                                                                                                                  "stringUnit":  {
+                                                                                                                                                                                     "state":  "translated",
+                                                                                                                                                                                     "value":  "On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported."
+                                                                                                                                                                                 }
+                                                                                                                                                              },
+                                                                                                                                                       "tr":  {
+                                                                                                                                                                  "stringUnit":  {
+                                                                                                                                                                                     "state":  "translated",
+                                                                                                                                                                                     "value":  "Cihaz üzerindeki MobileGestalt düzenlemesi için iOS / iPadOS 27 veya üzeri gerekir. iOS / iPadOS 26 desteklenmez."
+                                                                                                                                                                                 }
+                                                                                                                                                              }
+                                                                                                                                                   }
+                                                                                                                             },
+                    "Tools":  {
+                                  "extractionState":  "manual",
+                                  "localizations":  {
+                                                        "en":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Tools"
+                                                                                  }
+                                                               },
+                                                        "tr":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Araçlar"
+                                                                                  }
+                                                               }
+                                                    }
+                              },
+                    "Fields":  {
+                                   "extractionState":  "manual",
+                                   "localizations":  {
+                                                         "en":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Fields"
+                                                                                   }
+                                                                },
+                                                         "tr":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Alanlar"
+                                                                                   }
+                                                                }
+                                                     }
+                               },
+                    "Restore":  {
+                                    "extractionState":  "manual",
+                                    "localizations":  {
+                                                          "en":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Restore"
+                                                                                    }
+                                                                 },
+                                                          "tr":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Geri Yükle"
+                                                                                    }
+                                                                 }
+                                                      }
+                                },
+                    "Settings":  {
+                                     "extractionState":  "manual",
+                                     "localizations":  {
+                                                           "en":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Settings"
+                                                                                     }
+                                                                  },
+                                                           "tr":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Ayarlar"
+                                                                                     }
+                                                                  }
+                                                       }
+                                 },
+                    "Settings Shortcuts":  {
+                                               "extractionState":  "manual",
+                                               "localizations":  {
+                                                                     "en":  {
+                                                                                "stringUnit":  {
+                                                                                                   "state":  "translated",
+                                                                                                   "value":  "Settings Shortcuts"
+                                                                                               }
+                                                                            },
+                                                                     "tr":  {
+                                                                                "stringUnit":  {
+                                                                                                   "state":  "translated",
+                                                                                                   "value":  "Ayar Kısayolları"
+                                                                                               }
+                                                                            }
+                                                                 }
+                                           },
+                    "Internal \u0026 Research":  {
+                                                     "extractionState":  "manual",
+                                                     "localizations":  {
+                                                                           "en":  {
+                                                                                      "stringUnit":  {
+                                                                                                         "state":  "translated",
+                                                                                                         "value":  "Internal \u0026 Research"
+                                                                                                     }
+                                                                                  },
+                                                                           "tr":  {
+                                                                                      "stringUnit":  {
+                                                                                                         "state":  "translated",
+                                                                                                         "value":  "Dahili ve Araştırma"
+                                                                                                     }
+                                                                                  }
+                                                                       }
+                                                 },
+                    "Device Name":  {
+                                        "extractionState":  "manual",
+                                        "localizations":  {
+                                                              "en":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Device Name"
+                                                                                        }
+                                                                     },
+                                                              "tr":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Cihaz Adı"
+                                                                                        }
+                                                                     }
+                                                          }
+                                    },
+                    "Advanced":  {
+                                     "extractionState":  "manual",
+                                     "localizations":  {
+                                                           "en":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Advanced"
+                                                                                     }
+                                                                  },
+                                                           "tr":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Gelişmiş"
+                                                                                     }
+                                                                  }
+                                                       }
+                                 },
+                    "Developer":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Developer"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Geliştirici"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "Support the Developer":  {
+                                                  "extractionState":  "manual",
+                                                  "localizations":  {
+                                                                        "en":  {
+                                                                                   "stringUnit":  {
+                                                                                                      "state":  "translated",
+                                                                                                      "value":  "Support the Developer"
+                                                                                                  }
+                                                                               },
+                                                                        "tr":  {
+                                                                                   "stringUnit":  {
+                                                                                                      "state":  "translated",
+                                                                                                      "value":  "Geliştiriciyi Destekle"
+                                                                                                  }
+                                                                               }
+                                                                    }
+                                              },
+                    "Liquid Glass":  {
+                                         "extractionState":  "manual",
+                                         "localizations":  {
+                                                               "en":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Liquid Glass"
+                                                                                         }
+                                                                      },
+                                                               "tr":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Liquid Glass"
+                                                                                         }
+                                                                      }
+                                                           }
+                                     },
+                    "No Change":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "No Change"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Değişiklik Yok"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "Reduced Effects":  {
+                                            "extractionState":  "manual",
+                                            "localizations":  {
+                                                                  "en":  {
+                                                                             "stringUnit":  {
+                                                                                                "state":  "translated",
+                                                                                                "value":  "Reduced Effects"
+                                                                                            }
+                                                                         },
+                                                                  "tr":  {
+                                                                             "stringUnit":  {
+                                                                                                "state":  "translated",
+                                                                                                "value":  "Azaltılmış Efektler"
+                                                                                            }
+                                                                         }
+                                                              }
+                                        },
+                    "Full Effects":  {
+                                         "extractionState":  "manual",
+                                         "localizations":  {
+                                                               "en":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Full Effects"
+                                                                                         }
+                                                                      },
+                                                               "tr":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Tam Efektler"
+                                                                                         }
+                                                                      }
+                                                           }
+                                     },
+                    "AOD Options":  {
+                                        "extractionState":  "manual",
+                                        "localizations":  {
+                                                              "en":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "AOD Options"
+                                                                                        }
+                                                                     },
+                                                              "tr":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Her Zaman Açık Ekran Seçenekleri"
+                                                                                        }
+                                                                     }
+                                                          }
+                                    },
+                    "Enable Siri AI":  {
+                                           "extractionState":  "manual",
+                                           "localizations":  {
+                                                                 "en":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Enable Siri AI"
+                                                                                           }
+                                                                        },
+                                                                 "tr":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Siri Yapay Zekâsını Etkinleştir"
+                                                                                           }
+                                                                        }
+                                                             }
+                                       },
+                    "High Risk":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "High Risk"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Yüksek Risk"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "Device Region":  {
+                                          "extractionState":  "manual",
+                                          "localizations":  {
+                                                                "en":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Device Region"
+                                                                                          }
+                                                                       },
+                                                                "tr":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Cihaz Bölgesi"
+                                                                                          }
+                                                                       }
+                                                            }
+                                      },
+                    "Dynamic Island":  {
+                                           "extractionState":  "manual",
+                                           "localizations":  {
+                                                                 "en":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Dynamic Island"
+                                                                                           }
+                                                                        },
+                                                                 "tr":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Dynamic Island"
+                                                                                           }
+                                                                        }
+                                                             }
+                                       },
+                    "Island Layout":  {
+                                          "extractionState":  "manual",
+                                          "localizations":  {
+                                                                "en":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Island Layout"
+                                                                                          }
+                                                                       },
+                                                                "tr":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Ada Düzeni"
+                                                                                          }
+                                                                       }
+                                                            }
+                                      },
+                    "Keep Current Layout":  {
+                                                "extractionState":  "manual",
+                                                "localizations":  {
+                                                                      "en":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Keep Current Layout"
+                                                                                                }
+                                                                             },
+                                                                      "tr":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Mevcut Düzeni Koru"
+                                                                                                }
+                                                                             }
+                                                                  }
+                                            },
+                    "Change model name in About":  {
+                                                       "extractionState":  "manual",
+                                                       "localizations":  {
+                                                                             "en":  {
+                                                                                        "stringUnit":  {
+                                                                                                           "state":  "translated",
+                                                                                                           "value":  "Change model name in About"
+                                                                                                       }
+                                                                                    },
+                                                                             "tr":  {
+                                                                                        "stringUnit":  {
+                                                                                                           "state":  "translated",
+                                                                                                           "value":  "Hakkında bölümündeki model adını değiştir"
+                                                                                                       }
+                                                                                    }
+                                                                         }
+                                                   },
+                    "Model Name":  {
+                                       "extractionState":  "manual",
+                                       "localizations":  {
+                                                             "en":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "Model Name"
+                                                                                       }
+                                                                    },
+                                                             "tr":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "Model Adı"
+                                                                                       }
+                                                                    }
+                                                         }
+                                   },
+                    "Reading MobileGestalt…":  {
+                                                   "extractionState":  "manual",
+                                                   "localizations":  {
+                                                                         "en":  {
+                                                                                    "stringUnit":  {
+                                                                                                       "state":  "translated",
+                                                                                                       "value":  "Reading MobileGestalt…"
+                                                                                                   }
+                                                                                },
+                                                                         "tr":  {
+                                                                                    "stringUnit":  {
+                                                                                                       "state":  "translated",
+                                                                                                       "value":  "MobileGestalt okunuyor…"
+                                                                                                   }
+                                                                                }
+                                                                     }
+                                               },
+                    "Unable to read MobileGestalt":  {
+                                                         "extractionState":  "manual",
+                                                         "localizations":  {
+                                                                               "en":  {
+                                                                                          "stringUnit":  {
+                                                                                                             "state":  "translated",
+                                                                                                             "value":  "Unable to read MobileGestalt"
+                                                                                                         }
+                                                                                      },
+                                                                               "tr":  {
+                                                                                          "stringUnit":  {
+                                                                                                             "state":  "translated",
+                                                                                                             "value":  "MobileGestalt okunamadı"
+                                                                                                         }
+                                                                                      }
+                                                                           }
+                                                     },
+                    "Reload":  {
+                                   "extractionState":  "manual",
+                                   "localizations":  {
+                                                         "en":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Reload"
+                                                                                   }
+                                                                },
+                                                         "tr":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Yeniden Yükle"
+                                                                                   }
+                                                                }
+                                                     }
+                               },
+                    "Connected":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Connected"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Bağlandı"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "Current Device":  {
+                                           "extractionState":  "manual",
+                                           "localizations":  {
+                                                                 "en":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Current Device"
+                                                                                           }
+                                                                        },
+                                                                 "tr":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Mevcut Cihaz"
+                                                                                           }
+                                                                        }
+                                                             }
+                                       },
+                    "Apply":  {
+                                  "extractionState":  "manual",
+                                  "localizations":  {
+                                                        "en":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Apply"
+                                                                                  }
+                                                               },
+                                                        "tr":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Uygula"
+                                                                                  }
+                                                               }
+                                                    }
+                              },
+                    "%d pending changes":  {
+                                               "extractionState":  "manual",
+                                               "localizations":  {
+                                                                     "en":  {
+                                                                                "stringUnit":  {
+                                                                                                   "state":  "translated",
+                                                                                                   "value":  "%d pending changes"
+                                                                                               }
+                                                                            },
+                                                                     "tr":  {
+                                                                                "stringUnit":  {
+                                                                                                   "state":  "translated",
+                                                                                                   "value":  "%d bekleyen değişiklik"
+                                                                                               }
+                                                                            }
+                                                                 }
+                                           },
+                    "About %@":  {
+                                     "extractionState":  "manual",
+                                     "localizations":  {
+                                                           "en":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "About %@"
+                                                                                     }
+                                                                  },
+                                                           "tr":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "%@ Hakkında"
+                                                                                     }
+                                                                  }
+                                                       }
+                                 },
+                    "Back Up Current MobileGestalt":  {
+                                                          "extractionState":  "manual",
+                                                          "localizations":  {
+                                                                                "en":  {
+                                                                                           "stringUnit":  {
+                                                                                                              "state":  "translated",
+                                                                                                              "value":  "Back Up Current MobileGestalt"
+                                                                                                          }
+                                                                                       },
+                                                                                "tr":  {
+                                                                                           "stringUnit":  {
+                                                                                                              "state":  "translated",
+                                                                                                              "value":  "Mevcut MobileGestalt\u0027ı Yedekle"
+                                                                                                          }
+                                                                                       }
+                                                                            }
+                                                      },
+                    "Import Backup":  {
+                                          "extractionState":  "manual",
+                                          "localizations":  {
+                                                                "en":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Import Backup"
+                                                                                          }
+                                                                       },
+                                                                "tr":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Yedek İçe Aktar"
+                                                                                          }
+                                                                       }
+                                                            }
+                                      },
+                    "Siri AI":  {
+                                    "extractionState":  "manual",
+                                    "localizations":  {
+                                                          "en":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Siri AI"
+                                                                                    }
+                                                                 },
+                                                          "tr":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Siri Yapay Zekâsı"
+                                                                                    }
+                                                                 }
+                                                      }
+                                },
+                    "After the Siri AI model download finishes, use this backup to remove device spoofing. Face ID and dictation will work again after restarting, while Siri AI settings stay enabled.":  {
+                                                                                                                                                                                                               "extractionState":  "manual",
+                                                                                                                                                                                                               "localizations":  {
+                                                                                                                                                                                                                                     "en":  {
+                                                                                                                                                                                                                                                "stringUnit":  {
+                                                                                                                                                                                                                                                                   "state":  "translated",
+                                                                                                                                                                                                                                                                   "value":  "After the Siri AI model download finishes, use this backup to remove device spoofing. Face ID and dictation will work again after restarting, while Siri AI settings stay enabled."
+                                                                                                                                                                                                                                                               }
+                                                                                                                                                                                                                                            },
+                                                                                                                                                                                                                                     "tr":  {
+                                                                                                                                                                                                                                                "stringUnit":  {
+                                                                                                                                                                                                                                                                   "state":  "translated",
+                                                                                                                                                                                                                                                                   "value":  "Siri Yapay Zekâ modeli indirildikten sonra cihaz kimliği taklidini kaldırmak için bu yedeği kullan. Yeniden başlatmanın ardından Face ID ve dikte yeniden çalışır; Siri Yapay Zekâ ayarları etkin kalır."
+                                                                                                                                                                                                                                                               }
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                           },
+                    "Local Backups":  {
+                                          "extractionState":  "manual",
+                                          "localizations":  {
+                                                                "en":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Local Backups"
+                                                                                          }
+                                                                       },
+                                                                "tr":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Yerel Yedekler"
+                                                                                          }
+                                                                       }
+                                                            }
+                                      },
+                    "No Backups":  {
+                                       "extractionState":  "manual",
+                                       "localizations":  {
+                                                             "en":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "No Backups"
+                                                                                       }
+                                                                    },
+                                                             "tr":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "Yedek Yok"
+                                                                                       }
+                                                                    }
+                                                         }
+                                   },
+                    "Apple Watch Backups":  {
+                                                "extractionState":  "manual",
+                                                "localizations":  {
+                                                                      "en":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Apple Watch Backups"
+                                                                                                }
+                                                                             },
+                                                                      "tr":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Apple Watch Yedekleri"
+                                                                                                }
+                                                                             }
+                                                                  }
+                                            },
+                    "Backup Details":  {
+                                           "extractionState":  "manual",
+                                           "localizations":  {
+                                                                 "en":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Backup Details"
+                                                                                           }
+                                                                        },
+                                                                 "tr":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Yedek Ayrıntıları"
+                                                                                           }
+                                                                        }
+                                                             }
+                                       },
+                    "No Field Changes":  {
+                                             "extractionState":  "manual",
+                                             "localizations":  {
+                                                                   "en":  {
+                                                                              "stringUnit":  {
+                                                                                                 "state":  "translated",
+                                                                                                 "value":  "No Field Changes"
+                                                                                             }
+                                                                          },
+                                                                   "tr":  {
+                                                                              "stringUnit":  {
+                                                                                                 "state":  "translated",
+                                                                                                 "value":  "Alan Değişikliği Yok"
+                                                                                             }
+                                                                          }
+                                                               }
+                                         },
+                    "Not Present":  {
+                                        "extractionState":  "manual",
+                                        "localizations":  {
+                                                              "en":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Not Present"
+                                                                                        }
+                                                                     },
+                                                              "tr":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Mevcut Değil"
+                                                                                        }
+                                                                     }
+                                                          }
+                                    },
+                    "Changes":  {
+                                    "extractionState":  "manual",
+                                    "localizations":  {
+                                                          "en":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Changes"
+                                                                                    }
+                                                                 },
+                                                          "tr":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "Değişiklikler"
+                                                                                    }
+                                                                 }
+                                                      }
+                                },
+                    "Requested Changes":  {
+                                              "extractionState":  "manual",
+                                              "localizations":  {
+                                                                    "en":  {
+                                                                               "stringUnit":  {
+                                                                                                  "state":  "translated",
+                                                                                                  "value":  "Requested Changes"
+                                                                                              }
+                                                                           },
+                                                                    "tr":  {
+                                                                               "stringUnit":  {
+                                                                                                  "state":  "translated",
+                                                                                                  "value":  "İstenen Değişiklikler"
+                                                                                              }
+                                                                           }
+                                                                }
+                                          },
+                    "Export Backup":  {
+                                          "extractionState":  "manual",
+                                          "localizations":  {
+                                                                "en":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Export Backup"
+                                                                                          }
+                                                                       },
+                                                                "tr":  {
+                                                                           "stringUnit":  {
+                                                                                              "state":  "translated",
+                                                                                              "value":  "Yedeği Dışa Aktar"
+                                                                                          }
+                                                                       }
+                                                            }
+                                      },
+                    "Restore Backup":  {
+                                           "extractionState":  "manual",
+                                           "localizations":  {
+                                                                 "en":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Restore Backup"
+                                                                                           }
+                                                                        },
+                                                                 "tr":  {
+                                                                            "stringUnit":  {
+                                                                                               "state":  "translated",
+                                                                                               "value":  "Yedeği Geri Yükle"
+                                                                                           }
+                                                                        }
+                                                             }
+                                       },
+                    "Confirm Remove Device Spoof":  {
+                                                        "extractionState":  "manual",
+                                                        "localizations":  {
+                                                                              "en":  {
+                                                                                         "stringUnit":  {
+                                                                                                            "state":  "translated",
+                                                                                                            "value":  "Remove Device Spoof?"
+                                                                                                        }
+                                                                                     },
+                                                                              "tr":  {
+                                                                                         "stringUnit":  {
+                                                                                                            "state":  "translated",
+                                                                                                            "value":  "Cihaz Kimliği Taklidi Kaldırılsın mı?"
+                                                                                                        }
+                                                                                     }
+                                                                          }
+                                                    },
+                    "Restore This MobileGestalt Backup?":  {
+                                                               "extractionState":  "manual",
+                                                               "localizations":  {
+                                                                                     "en":  {
+                                                                                                "stringUnit":  {
+                                                                                                                   "state":  "translated",
+                                                                                                                   "value":  "Restore This MobileGestalt Backup?"
+                                                                                                               }
+                                                                                            },
+                                                                                     "tr":  {
+                                                                                                "stringUnit":  {
+                                                                                                                   "state":  "translated",
+                                                                                                                   "value":  "Bu MobileGestalt Yedeği Geri Yüklensin mi?"
+                                                                                                               }
+                                                                                            }
+                                                                                 }
+                                                           },
+                    "Remove Device Spoof Setting":  {
+                                                        "extractionState":  "manual",
+                                                        "localizations":  {
+                                                                              "en":  {
+                                                                                         "stringUnit":  {
+                                                                                                            "state":  "translated",
+                                                                                                            "value":  "Remove Device Spoof"
+                                                                                                        }
+                                                                                     },
+                                                                              "tr":  {
+                                                                                         "stringUnit":  {
+                                                                                                            "state":  "translated",
+                                                                                                            "value":  "Cihaz Kimliği Taklidini Kaldır"
+                                                                                                        }
+                                                                                     }
+                                                                          }
+                                                    },
+                    "Restore and Write":  {
+                                              "extractionState":  "manual",
+                                              "localizations":  {
+                                                                    "en":  {
+                                                                               "stringUnit":  {
+                                                                                                  "state":  "translated",
+                                                                                                  "value":  "Restore and Write"
+                                                                                              }
+                                                                           },
+                                                                    "tr":  {
+                                                                               "stringUnit":  {
+                                                                                                  "state":  "translated",
+                                                                                                  "value":  "Geri Yükle ve Yaz"
+                                                                                              }
+                                                                           }
+                                                                }
+                                          },
+                    "Cancel":  {
+                                   "extractionState":  "manual",
+                                   "localizations":  {
+                                                         "en":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Cancel"
+                                                                                   }
+                                                                },
+                                                         "tr":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "İptal"
+                                                                                   }
+                                                                }
+                                                     }
+                               },
+                    "Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing.":  {
+                                                                                                                                                                                                                                                                                   "extractionState":  "manual",
+                                                                                                                                                                                                                                                                                   "localizations":  {
+                                                                                                                                                                                                                                                                                                         "en":  {
+                                                                                                                                                                                                                                                                                                                    "stringUnit":  {
+                                                                                                                                                                                                                                                                                                                                       "state":  "translated",
+                                                                                                                                                                                                                                                                                                                                       "value":  "Complete the Siri AI model download first. Your original device identity will be restored, and Face ID and dictation will work again after restarting. SiriMode and other AI settings stay enabled. The current file will be backed up before writing."
+                                                                                                                                                                                                                                                                                                                                   }
+                                                                                                                                                                                                                                                                                                                },
+                                                                                                                                                                                                                                                                                                         "tr":  {
+                                                                                                                                                                                                                                                                                                                    "stringUnit":  {
+                                                                                                                                                                                                                                                                                                                                       "state":  "translated",
+                                                                                                                                                                                                                                                                                                                                       "value":  "Önce Siri Yapay Zekâ modeli indirmesini tamamla. Özgün cihaz kimliğin geri yüklenir; yeniden başlatmanın ardından Face ID ve dikte yeniden çalışır. SiriMode ve diğer yapay zekâ ayarları etkin kalır. Yazma işleminden önce mevcut dosya yedeklenir."
+                                                                                                                                                                                                                                                                                                                                   }
+                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                     }
+                                                                                                                                                                                                                                                                               },
+                    "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring.":  {
+                                                                                                                                                  "extractionState":  "manual",
+                                                                                                                                                  "localizations":  {
+                                                                                                                                                                        "en":  {
+                                                                                                                                                                                   "stringUnit":  {
+                                                                                                                                                                                                      "state":  "translated",
+                                                                                                                                                                                                      "value":  "The current Apple Watch file will be backed up first. The watch interface will restart automatically after restoring."
+                                                                                                                                                                                                  }
+                                                                                                                                                                               },
+                                                                                                                                                                        "tr":  {
+                                                                                                                                                                                   "stringUnit":  {
+                                                                                                                                                                                                      "state":  "translated",
+                                                                                                                                                                                                      "value":  "Önce mevcut Apple Watch dosyası yedeklenir. Geri yüklemeden sonra saat arayüzü otomatik olarak yeniden başlatılır."
+                                                                                                                                                                                                  }
+                                                                                                                                                                               }
+                                                                                                                                                                    }
+                                                                                                                                              },
+                    "The current file will be backed up first. SpringBoard will refresh automatically after restoring.":  {
+                                                                                                                              "extractionState":  "manual",
+                                                                                                                              "localizations":  {
+                                                                                                                                                    "en":  {
+                                                                                                                                                               "stringUnit":  {
+                                                                                                                                                                                  "state":  "translated",
+                                                                                                                                                                                  "value":  "The current file will be backed up first. SpringBoard will refresh automatically after restoring."
+                                                                                                                                                                              }
+                                                                                                                                                           },
+                                                                                                                                                    "tr":  {
+                                                                                                                                                               "stringUnit":  {
+                                                                                                                                                                                  "state":  "translated",
+                                                                                                                                                                                  "value":  "Önce mevcut dosya yedeklenir. Geri yüklemeden sonra SpringBoard otomatik olarak yenilenir."
+                                                                                                                                                                              }
+                                                                                                                                                           }
+                                                                                                                                                }
+                                                                                                                          },
+                    "Advanced Field Editor":  {
+                                                  "extractionState":  "manual",
+                                                  "localizations":  {
+                                                                        "en":  {
+                                                                                   "stringUnit":  {
+                                                                                                      "state":  "translated",
+                                                                                                      "value":  "Advanced Field Editor"
+                                                                                                  }
+                                                                               },
+                                                                        "tr":  {
+                                                                                   "stringUnit":  {
+                                                                                                      "state":  "translated",
+                                                                                                      "value":  "Gelişmiş Alan Düzenleyici"
+                                                                                                  }
+                                                                               }
+                                                                    }
+                                              },
+                    "Search key or value":  {
+                                                "extractionState":  "manual",
+                                                "localizations":  {
+                                                                      "en":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Search key or value"
+                                                                                                }
+                                                                             },
+                                                                      "tr":  {
+                                                                                 "stringUnit":  {
+                                                                                                    "state":  "translated",
+                                                                                                    "value":  "Anahtar veya değer ara"
+                                                                                                }
+                                                                             }
+                                                                  }
+                                            },
+                    "Add CacheExtra Field":  {
+                                                 "extractionState":  "manual",
+                                                 "localizations":  {
+                                                                       "en":  {
+                                                                                  "stringUnit":  {
+                                                                                                     "state":  "translated",
+                                                                                                     "value":  "Add CacheExtra Field"
+                                                                                                 }
+                                                                              },
+                                                                       "tr":  {
+                                                                                  "stringUnit":  {
+                                                                                                     "state":  "translated",
+                                                                                                     "value":  "CacheExtra Alanı Ekle"
+                                                                                                 }
+                                                                              }
+                                                                   }
+                                             },
+                    "Save":  {
+                                 "extractionState":  "manual",
+                                 "localizations":  {
+                                                       "en":  {
+                                                                  "stringUnit":  {
+                                                                                     "state":  "translated",
+                                                                                     "value":  "Save"
+                                                                                 }
+                                                              },
+                                                       "tr":  {
+                                                                  "stringUnit":  {
+                                                                                     "state":  "translated",
+                                                                                     "value":  "Kaydet"
+                                                                                 }
+                                                              }
+                                                   }
+                             },
+                    "Top Level":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Top Level"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Üst Seviye"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "No Results":  {
+                                       "extractionState":  "manual",
+                                       "localizations":  {
+                                                             "en":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "No Results"
+                                                                                       }
+                                                                    },
+                                                             "tr":  {
+                                                                        "stringUnit":  {
+                                                                                           "state":  "translated",
+                                                                                           "value":  "Sonuç Yok"
+                                                                                       }
+                                                                    }
+                                                         }
+                                   },
+                    "Device Type":  {
+                                        "extractionState":  "manual",
+                                        "localizations":  {
+                                                              "en":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Type"
+                                                                                        }
+                                                                     },
+                                                              "tr":  {
+                                                                         "stringUnit":  {
+                                                                                            "state":  "translated",
+                                                                                            "value":  "Tür"
+                                                                                        }
+                                                                     }
+                                                          }
+                                    },
+                    "Value":  {
+                                  "extractionState":  "manual",
+                                  "localizations":  {
+                                                        "en":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Value"
+                                                                                  }
+                                                               },
+                                                        "tr":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Değer"
+                                                                                  }
+                                                               }
+                                                    }
+                              },
+                    "Delete Field":  {
+                                         "extractionState":  "manual",
+                                         "localizations":  {
+                                                               "en":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Delete Field"
+                                                                                         }
+                                                                      },
+                                                               "tr":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Alanı Sil"
+                                                                                         }
+                                                                      }
+                                                           }
+                                     },
+                    "Delete CacheExtra Field?":  {
+                                                     "extractionState":  "manual",
+                                                     "localizations":  {
+                                                                           "en":  {
+                                                                                      "stringUnit":  {
+                                                                                                         "state":  "translated",
+                                                                                                         "value":  "Delete CacheExtra Field?"
+                                                                                                     }
+                                                                                  },
+                                                                           "tr":  {
+                                                                                      "stringUnit":  {
+                                                                                                         "state":  "translated",
+                                                                                                         "value":  "CacheExtra Alanı Silinsin mi?"
+                                                                                                     }
+                                                                                  }
+                                                                       }
+                                                 },
+                    "Delete":  {
+                                   "extractionState":  "manual",
+                                   "localizations":  {
+                                                         "en":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Delete"
+                                                                                   }
+                                                                },
+                                                         "tr":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Sil"
+                                                                                   }
+                                                                }
+                                                     }
+                               },
+                    "The field will be removed from the file after you return to the editor and tap Save.":  {
+                                                                                                                 "extractionState":  "manual",
+                                                                                                                 "localizations":  {
+                                                                                                                                       "en":  {
+                                                                                                                                                  "stringUnit":  {
+                                                                                                                                                                     "state":  "translated",
+                                                                                                                                                                     "value":  "The field will be removed from the file after you return to the editor and tap Save."
+                                                                                                                                                                 }
+                                                                                                                                              },
+                                                                                                                                       "tr":  {
+                                                                                                                                                  "stringUnit":  {
+                                                                                                                                                                     "state":  "translated",
+                                                                                                                                                                     "value":  "Düzenleyiciye dönüp Kaydet\u0027e dokunduğunda alan dosyadan kaldırılacak."
+                                                                                                                                                                 }
+                                                                                                                                              }
+                                                                                                                                   }
+                                                                                                             },
+                    "Done":  {
+                                 "extractionState":  "manual",
+                                 "localizations":  {
+                                                       "en":  {
+                                                                  "stringUnit":  {
+                                                                                     "state":  "translated",
+                                                                                     "value":  "Done"
+                                                                                 }
+                                                              },
+                                                       "tr":  {
+                                                                  "stringUnit":  {
+                                                                                     "state":  "translated",
+                                                                                     "value":  "Bitti"
+                                                                                 }
+                                                              }
+                                                   }
+                             },
+                    "Field":  {
+                                  "extractionState":  "manual",
+                                  "localizations":  {
+                                                        "en":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Field"
+                                                                                  }
+                                                               },
+                                                        "tr":  {
+                                                                   "stringUnit":  {
+                                                                                      "state":  "translated",
+                                                                                      "value":  "Alan"
+                                                                                  }
+                                                               }
+                                                    }
+                              },
+                    "Location":  {
+                                     "extractionState":  "manual",
+                                     "localizations":  {
+                                                           "en":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Location"
+                                                                                     }
+                                                                  },
+                                                           "tr":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Konum"
+                                                                                     }
+                                                                  }
+                                                       }
+                                 },
+                    "Key":  {
+                                "extractionState":  "manual",
+                                "localizations":  {
+                                                      "en":  {
+                                                                 "stringUnit":  {
+                                                                                    "state":  "translated",
+                                                                                    "value":  "Key"
+                                                                                }
+                                                             },
+                                                      "tr":  {
+                                                                 "stringUnit":  {
+                                                                                    "state":  "translated",
+                                                                                    "value":  "Anahtar"
+                                                                                }
+                                                             }
+                                                  }
+                            },
+                    "Add Field":  {
+                                      "extractionState":  "manual",
+                                      "localizations":  {
+                                                            "en":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Add Field"
+                                                                                      }
+                                                                   },
+                                                            "tr":  {
+                                                                       "stringUnit":  {
+                                                                                          "state":  "translated",
+                                                                                          "value":  "Alan Ekle"
+                                                                                      }
+                                                                   }
+                                                        }
+                                  },
+                    "Key cannot be empty.":  {
+                                                 "extractionState":  "manual",
+                                                 "localizations":  {
+                                                                       "en":  {
+                                                                                  "stringUnit":  {
+                                                                                                     "state":  "translated",
+                                                                                                     "value":  "Key cannot be empty."
+                                                                                                 }
+                                                                              },
+                                                                       "tr":  {
+                                                                                  "stringUnit":  {
+                                                                                                     "state":  "translated",
+                                                                                                     "value":  "Anahtar boş olamaz."
+                                                                                                 }
+                                                                              }
+                                                                   }
+                                             },
+                    "CacheExtra already contains the field: %@":  {
+                                                                      "extractionState":  "manual",
+                                                                      "localizations":  {
+                                                                                            "en":  {
+                                                                                                       "stringUnit":  {
+                                                                                                                          "state":  "translated",
+                                                                                                                          "value":  "CacheExtra already contains the field: %@"
+                                                                                                                      }
+                                                                                                   },
+                                                                                            "tr":  {
+                                                                                                       "stringUnit":  {
+                                                                                                                          "state":  "translated",
+                                                                                                                          "value":  "CacheExtra şu alanı zaten içeriyor: %@"
+                                                                                                                      }
+                                                                                                   }
+                                                                                        }
+                                                                  },
+                    "Language":  {
+                                     "extractionState":  "manual",
+                                     "localizations":  {
+                                                           "en":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Language"
+                                                                                     }
+                                                                  },
+                                                           "tr":  {
+                                                                      "stringUnit":  {
+                                                                                         "state":  "translated",
+                                                                                         "value":  "Dil"
+                                                                                     }
+                                                                  }
+                                                       }
+                                 },
+                    "App Language":  {
+                                         "extractionState":  "manual",
+                                         "localizations":  {
+                                                               "en":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "App Language"
+                                                                                         }
+                                                                      },
+                                                               "tr":  {
+                                                                          "stringUnit":  {
+                                                                                             "state":  "translated",
+                                                                                             "value":  "Uygulama Dili"
+                                                                                         }
+                                                                      }
+                                                           }
+                                     },
+                    "English":  {
+                                    "extractionState":  "manual",
+                                    "localizations":  {
+                                                          "en":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "English"
+                                                                                    }
+                                                                 },
+                                                          "tr":  {
+                                                                     "stringUnit":  {
+                                                                                        "state":  "translated",
+                                                                                        "value":  "İngilizce"
+                                                                                    }
+                                                                 }
+                                                      }
+                                },
+                    "Türkçe":  {
+                                   "extractionState":  "manual",
+                                   "localizations":  {
+                                                         "en":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Türkçe"
+                                                                                   }
+                                                                },
+                                                         "tr":  {
+                                                                    "stringUnit":  {
+                                                                                       "state":  "translated",
+                                                                                       "value":  "Türkçe"
+                                                                                   }
+                                                                }
+                                                     }
+                               },
+                    "Choose the language used throughout the app.":  {
+                                                                         "extractionState":  "manual",
+                                                                         "localizations":  {
+                                                                                               "en":  {
+                                                                                                          "stringUnit":  {
+                                                                                                                             "state":  "translated",
+                                                                                                                             "value":  "Choose the language used throughout the app."
+                                                                                                                         }
+                                                                                                      },
+                                                                                               "tr":  {
+                                                                                                          "stringUnit":  {
+                                                                                                                             "state":  "translated",
+                                                                                                                             "value":  "Uygulama genelinde kullanılacak dili seç."
+                                                                                                                         }
+                                                                                                      }
+                                                                                           }
+                                                                     }
+                },
+    "version":  "1.0"
 }
