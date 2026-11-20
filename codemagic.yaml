@@ -1,7 +1,29 @@
+
+workflows:
+  gestaltedit-ios:
+    name: GestaltEdit iOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      xcode: latest
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+
+    scripts:
+      - name: Check Xcode
+        script: |
+          xcodebuild -version
+
       - name: Build GestaltEdit
         script: |
           set -o pipefail
-
           xcodebuild \
             -project "$CM_BUILD_DIR/GestaltEdit.xcodeproj" \
             -scheme GestaltEdit \
