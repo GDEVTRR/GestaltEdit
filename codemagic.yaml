@@ -1,32 +1,7 @@
-
-workflows:
-  gestaltedit-ios:
-    name: GestaltEdit iOS Build
-    max_build_duration: 60
-    instance_type: mac_mini_m2
-
-    environment:
-      xcode: latest
-
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: main
-          include: true
-          source: true
-
-    scripts:
-      - name: Check Xcode
-        script: |
-          xcodebuild -version
-
-      - name: List project schemes
-        script: |
-          xcodebuild -list -project "$CM_BUILD_DIR/GestaltEdit.xcodeproj"
-
       - name: Build GestaltEdit
         script: |
+          set -o pipefail
+
           xcodebuild \
             -project "$CM_BUILD_DIR/GestaltEdit.xcodeproj" \
             -scheme GestaltEdit \
@@ -35,8 +10,10 @@ workflows:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$CM_BUILD_DIR/build/DerivedData" \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee "$CM_BUILD_DIR/xcodebuild.log"
+
+          echo "========== SWIFT ERRORS =========="
+          grep -n -B 5 -A 12 "error:" "$CM_BUILD_DIR/xcodebuild.log" || true
 
     artifacts:
-      - build/DerivedData/Build/Products/Debug-iphonesimulator/*.app
-      - /tmp/xcodebuild_logs/*.log
+      - xcodebuild.log
