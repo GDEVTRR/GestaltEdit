@@ -1,41 +1,48 @@
 
 workflows:
   gestaltedit-ios:
-    name: GestaltEdit iOS Build
+    name: GestaltEdit IPA
     max_build_duration: 60
     instance_type: mac_mini_m2
 
     environment:
       xcode: latest
 
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: main
-          include: true
-          source: true
-
     scripts:
-      - name: Check Xcode
-        script: |
-          xcodebuild -version
-
-      - name: Build GestaltEdit
+      - name: Archive iOS App
         script: |
           set -o pipefail
-          xcodebuild \
+
+          xcodebuild archive \
             -project "$CM_BUILD_DIR/GestaltEdit.xcodeproj" \
             -scheme GestaltEdit \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$CM_BUILD_DIR/build/DerivedData" \
-            CODE_SIGNING_ALLOWED=NO \
-            build 2>&1 | tee "$CM_BUILD_DIR/xcodebuild.log"
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$CM_BUILD_DIR/build/GestaltEdit.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO
 
-          echo "========== SWIFT ERRORS =========="
-          grep -n -B 5 -A 12 "error:" "$CM_BUILD_DIR/xcodebuild.log" || true
+      - name: Export IPA
+        script: |
+          mkdir -p "$CM_BUILD_DIR/build/ipa"
+
+          cat > "$CM_BUILD_DIR/ExportOptions.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>debugging</string>
+              <key>signingStyle</key>
+              <string>automatic</string>
+          </dict>
+          </plist>
+          PLIST
+
+          xcodebuild -exportArchive \
+            -archivePath "$CM_BUILD_DIR/build/GestaltEdit.xcarchive" \
+            -exportPath "$CM_BUILD_DIR/build/ipa" \
+            -exportOptionsPlist "$CM_BUILD_DIR/ExportOptions.plist"
 
     artifacts:
-      - xcodebuild.log
+      - build/ipa/*.ipa
+      - build/GestaltEdit.xcarchive
