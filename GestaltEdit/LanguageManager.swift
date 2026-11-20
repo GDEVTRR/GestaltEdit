@@ -1,4 +1,6 @@
+
 import SwiftUI
+import Combine
 
 @MainActor
 final class LanguageManager: ObservableObject {
@@ -6,7 +8,10 @@ final class LanguageManager: ObservableObject {
 
     @Published var selectedLanguage: String {
         didSet {
-            UserDefaults.standard.set(selectedLanguage, forKey: Self.storageKey)
+            UserDefaults.standard.set(
+                selectedLanguage,
+                forKey: Self.storageKey
+            )
         }
     }
 
@@ -15,8 +20,12 @@ final class LanguageManager: ObservableObject {
     }
 
     init() {
-        let savedLanguage = UserDefaults.standard.string(forKey: Self.storageKey)
-        if let savedLanguage, ["en", "tr"].contains(savedLanguage) {
+        let savedLanguage = UserDefaults.standard.string(
+            forKey: Self.storageKey
+        )
+
+        if let savedLanguage,
+           ["en", "tr"].contains(savedLanguage) {
             selectedLanguage = savedLanguage
         } else {
             selectedLanguage = "en"
