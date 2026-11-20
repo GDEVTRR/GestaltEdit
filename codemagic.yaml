@@ -1,15 +1,27 @@
 
 workflows:
   gestaltedit-ios:
-    name: GestaltEdit IPA
+    name: GestaltEdit Unsigned IPA
     max_build_duration: 60
     instance_type: mac_mini_m2
 
     environment:
       xcode: latest
 
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+
     scripts:
-      - name: Archive iOS App
+      - name: Check Xcode
+        script: |
+          xcodebuild -version
+
+      - name: Archive GestaltEdit
         script: |
           set -o pipefail
 
@@ -21,27 +33,28 @@ workflows:
             -archivePath "$CM_BUILD_DIR/build/GestaltEdit.xcarchive" \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Export IPA
+      - name: Create Unsigned IPA
         script: |
-          mkdir -p "$CM_BUILD_DIR/build/ipa"
+          set -e
 
-          cat > "$CM_BUILD_DIR/ExportOptions.plist" <<'PLIST'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-              <key>method</key>
-              <string>debugging</string>
-              <key>signingStyle</key>
-              <string>automatic</string>
-          </dict>
-          </plist>
-          PLIST
+          APP="$CM_BUILD_DIR/build/GestaltEdit.xcarchive/Products/Applications/GestaltEdit.app"
+          IPA_DIR="$CM_BUILD_DIR/build/ipa"
 
-          xcodebuild -exportArchive \
-            -archivePath "$CM_BUILD_DIR/build/GestaltEdit.xcarchive" \
-            -exportPath "$CM_BUILD_DIR/build/ipa" \
-            -exportOptionsPlist "$CM_BUILD_DIR/ExportOptions.plist"
+          if [ ! -d "$APP" ]; then
+            echo "ERROR: GestaltEdit.app bulunamadi!"
+            exit 1
+          fi
+
+          mkdir -p "$IPA_DIR/Payload"
+
+          cp -R "$APP" "$IPA_DIR/Payload/GestaltEdit.app"
+
+          cd "$IPA_DIR"
+
+          zip -r GestaltEdit.ipa Payload
+
+          echo "IPA CREATED:"
+          ls -lh GestaltEdit.ipa
 
     artifacts:
       - build/ipa/*.ipa
