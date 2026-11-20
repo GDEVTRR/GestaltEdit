@@ -223,13 +223,19 @@ private struct TweakWorkbench: View {
             let included = (viewModel.selectedTweaks.contains(.iPadOS)
                 && GestaltTweakCatalog.iPadIncludedTweaks.contains(id))
             TweakToggle(
-                definition: definition,
-                isOn: Binding(
-                    get: { included || viewModel.selectedTweaks.contains(id) },
-                    set: { viewModel.setTweak(id, enabled: $0) }
-                ),
-                included: included
-            )
+    definition: definition,
+    isOn: Binding(
+        get: {
+            included
+                || viewModel.selectedTweaks.contains(id)
+                || viewModel.isTweakApplied(id)
+        },
+        set: {
+            viewModel.setTweak(id, enabled: $0)
+        }
+    ),
+    included: included
+)
         }
     }
 
@@ -264,7 +270,9 @@ private struct TweakWorkbench: View {
     private var dynamicIslandSection: some View {
         Section("Dynamic Island") {
             tweakRow(.supportsDynamicIsland)
-            if viewModel.selectedTweaks.contains(.supportsDynamicIsland) || viewModel.dynamicIslandSubtype != nil {
+            if viewModel.selectedTweaks.contains(.supportsDynamicIsland)
+    || viewModel.isTweakApplied(.supportsDynamicIsland)
+    || viewModel.dynamicIslandSubtype != nil {
                 Picker("Island Layout", selection: $viewModel.dynamicIslandSubtype) {
                     Text("Keep Current Layout").tag(Int?.none)
                     ForEach(DynamicIslandOption.all) { option in

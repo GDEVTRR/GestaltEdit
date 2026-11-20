@@ -160,6 +160,26 @@ final class GestaltViewModel: ObservableObject {
     func setTweak(_ id: GestaltTweakID, enabled: Bool) {
         selectedTweaks = GestaltTweakCatalog.selecting(id, enabled: enabled, in: selectedTweaks)
     }
+    func isTweakApplied(_ id: GestaltTweakID) -> Bool {
+    guard let plist,
+          let definition = GestaltTweakCatalog.definition(for: id),
+          !definition.values.isEmpty else {
+        return false
+    }
+
+    let currentValues = plist.cacheExtra
+
+    return definition.values.allSatisfy { key, expectedValue in
+        guard let actualValue = currentValues[key] else {
+            return false
+        }
+
+        return NSDictionary(
+            object: actualValue,
+            forKey: "value" as NSString
+        ).isEqual(to: ["value": expectedValue])
+    }
+}
 
     func setAIRegion(enabled: Bool) {
         stagesAIRegion = enabled
