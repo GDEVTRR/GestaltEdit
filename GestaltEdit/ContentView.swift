@@ -14,18 +14,36 @@ struct ContentView: View {
                     description: Text("On-device MobileGestalt editing requires iOS / iPadOS 27 or later. iOS / iPadOS 26 is not supported.")
                 )
             } else {
-                TabView {
+                
+TabView {
                     TweakWorkbench()
-                        .tabItem { Label("Tools", systemImage: "switch.2") }
+                        .tabItem {
+                            Label("Tools", systemImage: "switch.2")
+                        }
 
-                    NavigationStack { AdvancedGestaltEditor().id(viewModel.deviceContextID) }
-                        .tabItem { Label("Fields", systemImage: "list.bullet.rectangle") }
+                    NavigationStack {
+                        AdvancedGestaltEditor()
+                            .id(viewModel.deviceContextID)
+                    }
+                    .tabItem {
+                        Label("Fields", systemImage: "list.bullet.rectangle")
+                    }
 
-                    BackupLibrary().id(viewModel.deviceContextID)
-                        .tabItem { Label("Restore", systemImage: "archivebox") }
+                    BackupLibrary()
+                        .id(viewModel.deviceContextID)
+                        .tabItem {
+                            Label("Restore", systemImage: "archivebox")
+                        }
+
+                    SettingsView()
+                        .tabItem {
+                            Label("Settings", systemImage: "gear")
+                        }
                 }
                 .disabled(viewModel.isBusy)
-                .task { viewModel.load() }
+                .task {
+                    viewModel.load()
+                }
             }
         }
         .overlay {
@@ -45,6 +63,7 @@ struct ContentView: View {
 
 private struct TweakWorkbench: View {
     @EnvironmentObject private var viewModel: GestaltViewModel
+    @EnvironmentObject private var languageManager: LanguageManager
 
     var body: some View {
         NavigationStack {
@@ -1001,4 +1020,5 @@ private struct AddCacheExtraFieldEditor: View {
 #Preview {
     ContentView()
         .environmentObject(GestaltViewModel())
+        .environmentObject(LanguageManager())
 }
